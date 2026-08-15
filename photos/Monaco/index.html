@@ -1,0 +1,146 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <title>Monaco</title>
+        <link rel="stylesheet" href="/style.css">
+    </head>
+
+    <body>
+        <script>
+            const theme = localStorage.getItem("theme") || "dark";
+            document.body.classList.add(theme);
+        </script>
+
+        <div class="menu-btn-container">
+            <div class="container">
+                <button type="button" class="menu-btn">menu</button>
+            </div>
+        </div>
+
+        <nav class="nav hidden">
+            <ol class="nav-items">
+                <li class="nav-item"><a href="/">Home</a></li>
+                <li class="nav-item"><a href="/photos">Photos</a></li>
+                <li class="nav-item"><a href="/#work">My Work</a></li>
+                <li class="nav-item"><a href="/#about-me">About</a></li>
+                <li class="nav-item"><a href="/#skills">My Skills</a></li>
+                <li class="nav-item">
+                    <a href="/#contact" data-focused="last-focused">Contact</a>
+                </li>
+            </ol>
+        </nav>
+
+        <header class="header photos-header">
+            <div class="container">
+                <div class="header-content"> 
+                    <h1 class="h1">Monaco</h1>
+
+                    <p class="header-text">This is the start of the Monaco photo page.</p>
+                    <!-- Use relative paths because this index.html lives inside the Minnesota folder -->
+<!-- Cars / Aprilia RS660 -->
+<img src="./Cars/Aprilia RS660/IMG_2887.JPG" loading="lazy" alt="IMG_2887" />
+<img src="./Cars/Aprilia RS660/IMG_2888.JPG" loading="lazy" alt="IMG_2888" />
+<img src="./Cars/Aprilia RS660/IMG_2889.JPG" loading="lazy" alt="IMG_2889" />
+<img src="./Cars/Aprilia RS660/IMG_2890.JPG" loading="lazy" alt="IMG_2890" />
+
+<!-- Cars / Bugatti Chiron -->
+<img src="./Cars/Bugatti Chiron/IMG_2865.JPG" loading="lazy" alt="IMG_2865" />
+<img src="./Cars/Bugatti Chiron/IMG_2866.JPG" loading="lazy" alt="IMG_2866" />
+<img src="./Cars/Bugatti Chiron/IMG_2867.JPG" loading="lazy" alt="IMG_2867" />
+<img src="./Cars/Bugatti Chiron/IMG_2868.JPG" loading="lazy" alt="IMG_2868" />
+<img src="./Cars/Bugatti Chiron/IMG_2869.JPG" loading="lazy" alt="IMG_2869" />
+
+<!-- Cars / Bugatti Veyron -->
+<img src="./Cars/Bugatti Veyron/IMG_2873.JPG" loading="lazy" alt="IMG_2873" />
+
+<!-- Cars / Ferrari + Aston Martin -->
+<img src="./Cars/Ferrari + Aston Martin/IMG_2864.JPG" loading="lazy" alt="IMG_2864" />
+<img src="./Cars/Ferrari + Aston Martin/IMG_2871.JPG" loading="lazy" alt="IMG_2871" />
+
+<!-- Cars / Ferrari 308 GTB -->
+<img src="./Cars/Ferrari 308 GTB/IMG_2854.JPG" loading="lazy" alt="IMG_2854" />
+<img src="./Cars/Ferrari 308 GTB/IMG_2855.JPG" loading="lazy" alt="IMG_2855" />
+<img src="./Cars/Ferrari 308 GTB/IMG_2856.JPG" loading="lazy" alt="IMG_2856" />
+<img src="./Cars/Ferrari 308 GTB/IMG_2858.JPG" loading="lazy" alt="IMG_2858" />
+
+<!-- Cars / Ferrari 458 Pista -->
+<img src="./Cars/Ferrari 458 Pista/IMG_2863.JPG" loading="lazy" alt="IMG_2863" />
+<img src="./Cars/Ferrari 458 Pista/IMG_2874.JPG" loading="lazy" alt="IMG_2874" />
+
+<!-- Cars / Ferrari 488 Pista -->
+<img src="./Cars/Ferrari 488 Pista/IMG_2851.JPG" loading="lazy" alt="IMG_2851" />
+
+<!-- Cars / Ferrari Roma -->
+<img src="./Cars/Ferrari Roma/IMG_2859.JPG" loading="lazy" alt="IMG_2859" />
+<img src="./Cars/Ferrari Roma/IMG_2860.JPG" loading="lazy" alt="IMG_2860" />
+<img src="./Cars/Ferrari Roma/IMG_2872.JPG" loading="lazy" alt="IMG_2872" />
+
+<!-- Cars / Honorable Mention (videos) -->
+<video controls preload="metadata">
+  <source src="./Cars/Honorable Mention/MVI_2885.MOV" type="video/quicktime" />
+  Your browser does not support the video tag.
+</video>
+
+<video controls preload="metadata">
+  <source src="./Cars/Honorable Mention/MVI_3435.MOV" type="video/quicktime" />
+  Your browser does not support the video tag.
+</video>
+
+
+                </div>
+            </div>
+        </header>
+
+        <main>
+            <section class="container">
+                <p>This is the end of the Monaco photo page. Thank you for viewing, and I hope you enjoyed.</p>
+            </section>
+        </main>
+
+
+
+
+
+        <footer class="footer">
+            <div class="container">
+                <div class="footer-content">
+                    <nav>
+                        <ol class="footer-links">
+                            <li class="footer-link">
+                                <a title="GitHub" href="https://github.com/Axion-Industries" target="_blank" rel="noopener">
+                                    <img loading="lazy" src="/assets/images/social-links/github.svg" alt="GitHub" />
+                                </a>
+                            </li>
+                            <li class="footer-link">
+                                <a title="GitLab" href="https://gitlab.com/Axion-Industries" target="_blank" rel="noopener">
+                                    <img loading="lazy" src="/assets/images/social-links/gitlab.svg" alt="GitLab" />
+                                </a>
+                            </li>
+                            <li class="footer-link">
+                                <a title="Instagram" href="https://www.instagram.com/@bogdanzogovic123" target="_blank" rel="noopener">
+                                    <img loading="lazy" src="/assets/images/social-links/instagram.svg" alt="Instagram" />
+                                </a>
+                            </li>
+                            <li class="footer-link">
+                                <a title="Threads" href="https://www.threads.com/@bogdanzogovic123" target="_blank" rel="noopener">
+                                    <img loading="lazy" src="/assets/images/social-links/threads.svg" alt="Threads" />
+                                </a>
+                            </li>
+                        </ol>
+                    </nav>
+                    <p class="footer-text">
+                        &copy; <span>2025</span> - Portfolio by <a target="_blank" rel="noopener" href="https://github.com/Axion-Industries">Bogdan Zogovic.</a>
+                    </p>
+                    <label class="theme-switch" for="theme-switch">
+                        <span>Dark Theme</span>
+                        <input type="checkbox" id="theme-switch" role="switch" />
+                    </label>
+                </div>
+            </div>
+        </footer>
+
+        <script src="/script.js" defer></script>
+    </body>
+</html>

@@ -1,0 +1,97 @@
+{
+  "version": 2,
+  "cleanUrls": true,
+  "rewrites": [
+    { "source": "/home", "destination": "/" },
+    { "source": "/main", "destination": "/" },
+    { "source": "/index", "destination": "/" }
+  ],
+  "redirects": [
+    {
+      "source": "/metrics",
+      "destination": "/stats/",
+      "permanent": true
+    },
+    {
+      "source": "/stats",
+      "destination": "/stats/",
+      "permanent": true
+    },
+    {
+      "source": "/pages/stats",
+      "destination": "/stats/",
+      "permanent": true
+    },
+    {
+      "source": "/pages/home",
+      "destination": "/home/",
+      "permanent": true
+    },
+
+    {
+      "source": "/photos/monaco",
+      "destination": "/photos/Monaco/",
+      "permanent": true
+    },
+    {
+      "source": "/photos/Monaco",
+      "destination": "/photos/Monaco/",
+      "permanent": true
+    },
+
+    {
+      "source": "/photos/minnesota",
+      "destination": "/photos/Minnesota/",
+      "permanent": true
+    },
+    {
+      "source": "/photos/Minnesota",
+      "destination": "/photos/Minnesota/",
+      "permanent": true
+    },
+
+    {
+      "source": "/photos/italy",
+      "destination": "/photos/Italy/",
+      "permanent": true
+    },
+    {
+      "source": "/photos/Italy",
+      "destination": "/photos/Italy/",
+      "permanent": true
+    },
+
+    {
+      "source": "/photos/montenegro",
+      "destination": "/photos/Montenegro/",
+      "permanent": true
+    },
+    {
+      "source": "/photos/Montenegro",
+      "destination": "/photos/Montenegro/",
+      "permanent": true
+    },
+
+    {
+      "source": "/photos/wallpapers",
+      "destination": "/photos/Wallpapers/",
+      "permanent": true
+    },
+    {
+      "source": "/photos/Wallpapers",
+      "destination": "/photos/Wallpapers/",
+      "permanent": true
+    }
+  ],
+  "headers": [
+    {
+      "source": "/(.*)",
+      "headers": [
+        { "key": "X-Frame-Options", "value": "DENY" },
+        { "key": "X-Content-Type-Options", "value": "nosniff" },
+        { "key": "Referrer-Policy", "value": "strict-origin-when-cross-origin" },
+        { "key": "Permissions-Policy", "value": "geolocation=(), microphone=()" }
+      ]
+    }
+  ]
+}

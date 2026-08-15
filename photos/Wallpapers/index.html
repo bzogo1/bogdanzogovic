@@ -1,0 +1,119 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <title>Wallpapers</title>
+        <link rel="stylesheet" href="/style.css">
+    </head>
+
+    <body>
+        <script>
+            const theme = localStorage.getItem("theme") || "dark";
+            document.body.classList.add(theme);
+        </script>
+
+        <div class="menu-btn-container">
+            <div class="container">
+                <button type="button" class="menu-btn">menu</button>
+                <button type="button" class="menu-btn" onclick="location.href='/stats'">Stats</button> <!-- New Stats button -->
+            </div>
+        </div>
+
+        <nav class="nav hidden">
+            <ol class="nav-items">
+                <li class="nav-item"><a href="/">Home</a></li>
+                <li class="nav-item"><a href="/photos">Photos</a></li>
+                <li class="nav-item"><a href="/#work">My Work</a></li>
+                <li class="nav-item"><a href="/#about-me">About</a></li>
+                <li class="nav-item"><a href="/#skills">My Skills</a></li>
+                <li class="nav-item">
+                    <a href="/#contact" data-focused="last-focused">Contact</a>
+                </li>
+            </ol>
+        </nav>
+
+        <header class="header photos-header">
+            <div class="container">
+                <div class="header-content"> 
+                    <h1 class="h1">Wallpaper</h1>
+
+                    <p class="header-text">This is the start of the Wallpaper photo page.</p>
+                    <!-- Use relative paths because this index.html lives inside the Wallpapers folder -->
+                    <img src="./IMG_2877.JPG" loading="lazy" alt="IMG_2877" />
+                    <img src="./IMG_2882.JPG" loading="lazy" alt="IMG_2882" />
+                    <img src="./IMG_2976.JPG" loading="lazy" alt="IMG_2976" />
+                    <img src="./IMG_2979.JPG" loading="lazy" alt="IMG_2979" />
+                    <img src="./IMG_2989.JPG" loading="lazy" alt="IMG_2989" />
+                    <img src="./IMG_3013.JPG" loading="lazy" alt="IMG_3013" />
+                    <img src="./IMG_3044.JPG" loading="lazy" alt="IMG_3044" />
+                    <img src="./IMG_3055.JPG" loading="lazy" alt="IMG_3055" />
+                    <img src="./IMG_3057.JPG" loading="lazy" alt="IMG_3057" />
+                    <img src="./IMG_3068.JPG" loading="lazy" alt="IMG_3068" />
+                    <img src="./IMG_3078.JPG" loading="lazy" alt="IMG_3078" />
+                    <img src="./IMG_3091.JPG" loading="lazy" alt="IMG_3091" />
+                    <img src="./IMG_3101.JPG" loading="lazy" alt="IMG_3101" />
+                    <img src="./IMG_3117.JPG" loading="lazy" alt="IMG_3117" />
+                    <img src="./IMG_3237.JPG" loading="lazy" alt="IMG_3237" />
+                    <img src="./IMG_3245.JPG" loading="lazy" alt="IMG_3245" />
+                    <img src="./IMG_3393.JPG" loading="lazy" alt="IMG_3393" />
+                    <img src="./IMG_3683.JPG" loading="lazy" alt="IMG_3683" />
+                    <img src="./IMG_3771.JPG" loading="lazy" alt="IMG_3771" />
+                    <img src="./IMG_3772.JPG" loading="lazy" alt="IMG_3772" />
+                    <img src="./IMG_3806.JPG" loading="lazy" alt="IMG_3806" />
+                    <img src="./IMG_3844.JPG" loading="lazy" alt="IMG_3844" />
+                    <img src="./IMG_3897.JPG" loading="lazy" alt="IMG_3897" />
+                    <img src="./IMG_3898.JPG" loading="lazy" alt="IMG_3898" />
+                    <img src="./IMG_3983.JPG" loading="lazy" alt="IMG_3983" />
+
+                </div>
+            </div>
+        </header>
+
+        <main>
+            <section class="container">
+                <p>This is the end of the Minnesota photo page. Thank you for viewing, and I hope you enjoyed.</p>
+            </section>
+        </main>
+
+        <footer class="footer">
+            <div class="container">
+                <div class="footer-content">
+                    <nav>
+                        <ol class="footer-links">
+                            <li class="footer-link">
+                                <a title="GitHub" href="https://github.com/Axion-Industries" target="_blank" rel="noopener">
+                                    <img loading="lazy" src="/assets/images/social-links/github.svg" alt="GitHub" />
+                                </a>
+                            </li>
+                            <li class="footer-link">
+                                <a title="GitLab" href="https://gitlab.com/Axion-Industries" target="_blank" rel="noopener">
+                                    <img loading="lazy" src="/assets/images/social-links/gitlab.svg" alt="GitLab" />
+                                </a>
+                            </li>
+                            <li class="footer-link">
+                                <a title="Instagram" href="https://www.instagram.com/@bogdanzogovic123" target="_blank" rel="noopener">
+                                    <img loading="lazy" src="/assets/images/social-links/instagram.svg" alt="Instagram" />
+                                </a>
+                            </li>
+                            <li class="footer-link">
+                                <a title="Threads" href="https://www.threads.com/@bogdanzogovic123" target="_blank" rel="noopener">
+                                    <img loading="lazy" src="/assets/images/social-links/threads.svg" alt="Threads" />
+                                </a>
+                            </li>
+                        </ol>
+                    </nav>
+                    <p class="footer-text">
+                        &copy; <span>2025</span> - Portfolio by <a target="_blank" rel="noopener" href="https://github.com/Axion-Industries">Bogdan Zogovic.</a>
+                    </p>
+                    <label class="theme-switch" for="theme-switch">
+                        <span>Dark Theme</span>
+                        <input type="checkbox" id="theme-switch" role="switch" />
+                    </label>
+                </div>
+            </div>
+        </footer>
+
+        <script src="/script.js" defer></script>
+    </body>
+</html>
