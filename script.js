@@ -158,6 +158,83 @@ if (contextMenu) {
   });
 }
 
+const githubGlassCard = document.getElementById("glass-card");
+
+if (githubGlassCard) {
+  let isDragging = false;
+  let dragStartX = 0;
+  let dragStartY = 0;
+  let startOffsetX = 0;
+  let startOffsetY = 0;
+
+  const clamp = (value, min, max) => Math.min(Math.max(value, min), max);
+
+  const getCardOffsets = () => {
+    const x = parseFloat(getComputedStyle(githubGlassCard).getPropertyValue("--card-x")) || 0;
+    const y = parseFloat(getComputedStyle(githubGlassCard).getPropertyValue("--card-y")) || 0;
+    return { x, y };
+  };
+
+  const setCardOffsets = (x, y) => {
+    const shell = githubGlassCard.closest(".github-portfolio-shell");
+    const shellRect = shell ? shell.getBoundingClientRect() : null;
+    const cardRect = githubGlassCard.getBoundingClientRect();
+
+    if (shellRect && cardRect) {
+      const maxX = Math.max(0, (shellRect.width - cardRect.width) / 2);
+      const maxY = Math.max(0, (shellRect.height - cardRect.height) / 2);
+      const nextX = clamp(x, -maxX, maxX);
+      const nextY = clamp(y, -maxY, maxY);
+      githubGlassCard.style.setProperty("--card-x", `${nextX}px`);
+      githubGlassCard.style.setProperty("--card-y", `${nextY}px`);
+      return;
+    }
+
+    githubGlassCard.style.setProperty("--card-x", `${x}px`);
+    githubGlassCard.style.setProperty("--card-y", `${y}px`);
+  };
+
+  githubGlassCard.addEventListener("pointerdown", (event) => {
+    if (event.target.closest("a, button, input, textarea, select")) {
+      return;
+    }
+
+    event.preventDefault();
+    isDragging = true;
+    githubGlassCard.classList.add("dragging");
+    githubGlassCard.setPointerCapture(event.pointerId);
+
+    const { x, y } = getCardOffsets();
+    dragStartX = event.clientX;
+    dragStartY = event.clientY;
+    startOffsetX = x;
+    startOffsetY = y;
+  });
+
+  githubGlassCard.addEventListener("pointermove", (event) => {
+    if (!isDragging) {
+      return;
+    }
+
+    const deltaX = event.clientX - dragStartX;
+    const deltaY = event.clientY - dragStartY;
+    setCardOffsets(startOffsetX + deltaX, startOffsetY + deltaY);
+  });
+
+  const stopDragging = () => {
+    if (!isDragging) {
+      return;
+    }
+
+    isDragging = false;
+    githubGlassCard.classList.remove("dragging");
+  };
+
+  githubGlassCard.addEventListener("pointerup", stopDragging);
+  githubGlassCard.addEventListener("pointercancel", stopDragging);
+  githubGlassCard.addEventListener("lostpointercapture", stopDragging);
+}
+
 const nav = document.querySelector(".nav");
 const navMenu = document.querySelector(".nav-items");
 const btnToggleNav = document.querySelector(".menu-btn");

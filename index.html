@@ -544,6 +544,8 @@
         display: flex;
         justify-content: center;
         align-items: center;
+        position: relative;
+        overflow: hidden;
         border-radius: 28px;
         background-image: url('https://images.unsplash.com/photo-1464822759023-fed622ff2c3b?auto=format&fit=crop&w=1200&q=80');
         background-size: cover;
@@ -554,6 +556,8 @@
 
       .github-portfolio-card-section .liquid-glass {
         --scale-factor: 1;
+        --card-x: 0px;
+        --card-y: 0px;
         width: 273px;
         height: 280px;
         min-height: 310px;
@@ -570,8 +574,13 @@
         justify-content: space-between;
         box-sizing: border-box;
         will-change: transform, left, top;
-        transform: scale(var(--scale-factor));
+        transform: translate(var(--card-x), var(--card-y)) scale(var(--scale-factor));
         user-select: none;
+        touch-action: none;
+      }
+
+      .github-portfolio-card-section .liquid-glass.dragging {
+        cursor: grabbing;
       }
 
       .github-portfolio-card-section .liquid-glass::before {
@@ -601,7 +610,7 @@
       }
 
       .github-portfolio-card-section .liquid-glass:hover {
-        transform: scale(var(--scale-factor)) translateY(-4px);
+        transform: translate(var(--card-x), var(--card-y)) scale(var(--scale-factor)) translateY(-4px);
       }
 
       .github-portfolio-card-section .profile-card-content {
