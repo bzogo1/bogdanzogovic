@@ -63,9 +63,39 @@ if (contextMenu) {
     event.preventDefault();
 
     const menuWidth = 210;
-    const menuHeight = 220;
-    const x = Math.min(event.clientX + 10, window.innerWidth - menuWidth - 12);
-    const y = Math.min(event.clientY + 10, window.innerHeight - menuHeight - 12);
+    const menuHeight = 240;
+    const gap = 14;
+    const offsetX = 18;
+    const offsetY = 18;
+    const viewportWidth = window.innerWidth;
+    const viewportHeight = window.innerHeight;
+
+    const showAbove =
+      event.clientY + menuHeight + offsetY > viewportHeight - 18 ||
+      event.clientY < menuHeight + 60;
+
+    let x = event.clientX + offsetX;
+    let y = event.clientY + offsetY;
+
+    if (x + menuWidth > viewportWidth - 12) {
+      x = event.clientX - menuWidth - gap;
+    }
+
+    if (x < 12) {
+      x = 12;
+    }
+
+    if (showAbove) {
+      y = event.clientY - menuHeight - gap;
+    }
+
+    if (y < 12) {
+      y = 12;
+    }
+
+    if (y + menuHeight > viewportHeight - 12) {
+      y = viewportHeight - menuHeight - 12;
+    }
 
     contextMenu.style.left = `${x}px`;
     contextMenu.style.top = `${y}px`;

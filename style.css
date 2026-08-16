@@ -229,6 +229,11 @@ select,
   --cursor-scale: 0.75;
 }
 
+body.context-menu-open .cursor {
+  transform: translate(var(--cursor-x), var(--cursor-y)) translate(-50%, -50%)
+    scale(var(--cursor-scale)) translateY(-12px);
+}
+
 .context-menu {
   position: fixed;
   left: 0;
