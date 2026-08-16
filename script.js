@@ -57,6 +57,7 @@ if (contextMenu) {
   const closeContextMenu = () => {
     contextMenu.classList.add("hidden");
     contextMenu.setAttribute("aria-hidden", "true");
+    document.body.classList.remove("context-menu-open");
   };
 
   document.addEventListener("contextmenu", (event) => {
@@ -101,6 +102,7 @@ if (contextMenu) {
     contextMenu.style.top = `${y}px`;
     contextMenu.classList.remove("hidden");
     contextMenu.setAttribute("aria-hidden", "false");
+    document.body.classList.add("context-menu-open");
   });
 
   document.addEventListener("click", (event) => {
