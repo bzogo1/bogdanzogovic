@@ -111,6 +111,15 @@ html {
   cursor: none;
 }
 
+a,
+button,
+input,
+textarea,
+select,
+[role="button"] {
+  cursor: none !important;
+}
+
 @media (pointer: coarse) {
   html,
   body,
@@ -118,11 +127,13 @@ html {
   button,
   input,
   textarea,
-  select {
+  select,
+  [role="button"] {
     cursor: auto;
   }
 
-  .cursor {
+  .cursor,
+  .context-menu {
     display: none;
   }
 }
@@ -216,6 +227,64 @@ html {
 
 .cursor.is-active {
   --cursor-scale: 0.75;
+}
+
+.context-menu {
+  position: fixed;
+  left: 0;
+  top: 0;
+  min-width: 210px;
+  padding: 8px;
+  border-radius: 18px;
+  background: rgba(18, 18, 22, 0.9);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  box-shadow: 0 18px 45px rgba(0, 0, 0, 0.38);
+  backdrop-filter: blur(14px);
+  -webkit-backdrop-filter: blur(14px);
+  z-index: 10000;
+  opacity: 1;
+  visibility: visible;
+  pointer-events: auto;
+  transform: translate3d(0, 0, 0);
+  transition: opacity 120ms ease, transform 120ms ease;
+  font-family: "Segoe UI", "Inter", "Helvetica Neue", Arial, sans-serif;
+}
+
+.context-menu.hidden {
+  opacity: 0;
+  visibility: hidden;
+  pointer-events: none;
+  transform: translate3d(0, 6px, 0);
+}
+
+.context-item {
+  width: 100%;
+  appearance: none;
+  border: none;
+  background: transparent;
+  color: rgba(255, 255, 255, 0.9);
+  text-align: left;
+  font: inherit;
+  font-size: 0.92rem;
+  letter-spacing: 0.01em;
+  padding: 10px 12px;
+  border-radius: 10px;
+  transition: background 150ms ease, transform 150ms ease;
+}
+
+.context-item:hover,
+.context-item:focus-visible {
+  background: rgba(255, 255, 255, 0.08);
+  outline: none;
+}
+
+.context-item:active {
+  transform: scale(0.99);
+}
+
+body.inspect-mode * {
+  outline: 1px solid rgba(125, 92, 255, 0.45);
+  outline-offset: 1px;
 }
 
 /* Improve media defaults */

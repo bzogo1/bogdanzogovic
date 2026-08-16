@@ -4,7 +4,12 @@ const interactiveEls = document.querySelectorAll(
 );
 
 if (cursor && window.matchMedia("(pointer: fine)").matches) {
-  const state = { x: window.innerWidth / 2, y: window.innerHeight / 2, tx: window.innerWidth / 2, ty: window.innerHeight / 2 };
+  const state = {
+    x: window.innerWidth / 2,
+    y: window.innerHeight / 2,
+    tx: window.innerWidth / 2,
+    ty: window.innerHeight / 2,
+  };
 
   const updateCursorState = (clientX, clientY) => {
     state.tx = clientX;
@@ -34,8 +39,8 @@ if (cursor && window.matchMedia("(pointer: fine)").matches) {
   });
 
   const animateCursor = () => {
-    state.x += (state.tx - state.x) * 0.18;
-    state.y += (state.ty - state.y) * 0.18;
+    state.x += (state.tx - state.x) * 0.42;
+    state.y += (state.ty - state.y) * 0.42;
 
     cursor.style.setProperty("--cursor-x", `${state.x}px`);
     cursor.style.setProperty("--cursor-y", `${state.y}px`);
@@ -44,6 +49,81 @@ if (cursor && window.matchMedia("(pointer: fine)").matches) {
   };
 
   requestAnimationFrame(animateCursor);
+}
+
+const contextMenu = document.getElementById("context-menu");
+
+if (contextMenu) {
+  const closeContextMenu = () => {
+    contextMenu.classList.add("hidden");
+    contextMenu.setAttribute("aria-hidden", "true");
+  };
+
+  document.addEventListener("contextmenu", (event) => {
+    event.preventDefault();
+
+    const menuWidth = 210;
+    const menuHeight = 220;
+    const x = Math.min(event.clientX + 10, window.innerWidth - menuWidth - 12);
+    const y = Math.min(event.clientY + 10, window.innerHeight - menuHeight - 12);
+
+    contextMenu.style.left = `${x}px`;
+    contextMenu.style.top = `${y}px`;
+    contextMenu.classList.remove("hidden");
+    contextMenu.setAttribute("aria-hidden", "false");
+  });
+
+  document.addEventListener("click", (event) => {
+    if (!event.target.closest(".context-menu")) {
+      closeContextMenu();
+    }
+  });
+
+  document.addEventListener("keydown", (event) => {
+    if (event.key === "Escape") {
+      closeContextMenu();
+    }
+  });
+
+  contextMenu.querySelectorAll(".context-item").forEach((item) => {
+    item.addEventListener("click", () => {
+      const action = item.dataset.action;
+
+      if (action === "back") {
+        window.history.back();
+      }
+
+      if (action === "forward") {
+        window.history.forward();
+      }
+
+      if (action === "reload") {
+        window.location.reload();
+      }
+
+      if (action === "save-as") {
+        const a = document.createElement("a");
+        const blob = new Blob([document.documentElement.outerHTML], {
+          type: "text/html;charset=utf-8",
+        });
+        const url = URL.createObjectURL(blob);
+        a.href = url;
+        a.download = "portfolio-page.html";
+        a.click();
+        URL.revokeObjectURL(url);
+      }
+
+      if (action === "print") {
+        window.print();
+      }
+
+      if (action === "inspect") {
+        document.body.classList.toggle("inspect-mode");
+      }
+
+      closeContextMenu();
+    });
+  });
 }
 
 const nav = document.querySelector(".nav");
