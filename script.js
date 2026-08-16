@@ -1,3 +1,51 @@
+const cursor = document.querySelector(".cursor");
+const interactiveEls = document.querySelectorAll(
+  "a, button, input, textarea, select, [role='button']"
+);
+
+if (cursor && window.matchMedia("(pointer: fine)").matches) {
+  const state = { x: window.innerWidth / 2, y: window.innerHeight / 2, tx: window.innerWidth / 2, ty: window.innerHeight / 2 };
+
+  const updateCursorState = (clientX, clientY) => {
+    state.tx = clientX;
+    state.ty = clientY;
+    cursor.classList.add("is-visible");
+  };
+
+  window.addEventListener("pointermove", (event) => {
+    updateCursorState(event.clientX, event.clientY);
+  });
+
+  window.addEventListener("pointerdown", () => {
+    cursor.classList.add("is-active");
+  });
+
+  window.addEventListener("pointerup", () => {
+    cursor.classList.remove("is-active");
+  });
+
+  document.addEventListener("pointerleave", () => {
+    cursor.classList.remove("is-visible");
+  });
+
+  interactiveEls.forEach((el) => {
+    el.addEventListener("mouseenter", () => cursor.classList.add("is-hovering"));
+    el.addEventListener("mouseleave", () => cursor.classList.remove("is-hovering"));
+  });
+
+  const animateCursor = () => {
+    state.x += (state.tx - state.x) * 0.18;
+    state.y += (state.ty - state.y) * 0.18;
+
+    cursor.style.setProperty("--cursor-x", `${state.x}px`);
+    cursor.style.setProperty("--cursor-y", `${state.y}px`);
+
+    requestAnimationFrame(animateCursor);
+  };
+
+  requestAnimationFrame(animateCursor);
+}
+
 const nav = document.querySelector(".nav");
 const navMenu = document.querySelector(".nav-items");
 const btnToggleNav = document.querySelector(".menu-btn");
