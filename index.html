@@ -527,9 +527,250 @@
       </section>
       -->
 
-    
+    <style>
+      .github-portfolio-card-section {
+        padding: 2rem 0 0;
+      }
 
-      
+      .github-portfolio-card-section .container {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+      }
+
+      .github-portfolio-card-section .github-portfolio-shell {
+        width: 100%;
+        min-height: 360px;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        border-radius: 28px;
+        background-image: url('https://images.unsplash.com/photo-1464822759023-fed622ff2c3b?auto=format&fit=crop&w=1200&q=80');
+        background-size: cover;
+        background-position: center;
+        background-repeat: no-repeat;
+        box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.2);
+      }
+
+      .github-portfolio-card-section .liquid-glass {
+        --scale-factor: 1;
+        width: 273px;
+        height: 280px;
+        min-height: 310px;
+        padding: 33px;
+        border-radius: 28px;
+        isolation: isolate;
+        position: relative;
+        box-shadow: 0 24px 96px rgba(31, 38, 135, 0.21), inset 0 1px 0 rgba(255, 255, 255, 0.5);
+        cursor: grab;
+        transition: all 300ms cubic-bezier(0.4, 0.0, 0.2, 1);
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: space-between;
+        box-sizing: border-box;
+        will-change: transform, left, top;
+        transform: scale(var(--scale-factor));
+        user-select: none;
+      }
+
+      .github-portfolio-card-section .liquid-glass::before {
+        content: '';
+        position: absolute;
+        inset: 0;
+        z-index: 0;
+        border-radius: 28px;
+        border: 1px solid rgba(255, 255, 255, 0.2);
+        background-color: rgba(255, 255, 255, 0.03);
+        background-image: linear-gradient(135deg, rgba(255, 255, 255, 0.05), transparent 50%);
+        pointer-events: none;
+      }
+
+      .github-portfolio-card-section .liquid-glass::after {
+        content: '';
+        position: absolute;
+        inset: 0;
+        z-index: -1;
+        border-radius: 28px;
+        backdrop-filter: blur(3px);
+        -webkit-backdrop-filter: blur(3px);
+        filter: url(#liquid-glass-distortion);
+        -webkit-filter: url(#liquid-glass-distortion);
+        isolation: isolate;
+        pointer-events: none;
+      }
+
+      .github-portfolio-card-section .liquid-glass:hover {
+        transform: scale(var(--scale-factor)) translateY(-4px);
+      }
+
+      .github-portfolio-card-section .profile-card-content {
+        position: relative;
+        z-index: 1;
+        width: 100%;
+        height: 100%;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        color: #ffffff;
+        text-align: center;
+      }
+
+      .github-portfolio-card-section .profile-avatar-border {
+        position: relative;
+        width: 76px;
+        height: 76px;
+        border-radius: 50%;
+        padding: 2px;
+        background: rgba(255, 255, 255, 0.3);
+        box-sizing: border-box;
+        margin-bottom: 10px;
+        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+      }
+
+      .github-portfolio-card-section .profile-avatar-border img {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+        border-radius: 50%;
+        background-color: #1a1a1a;
+        pointer-events: none;
+      }
+
+      .github-portfolio-card-section .profile-info h2 {
+        font-size: 1.15rem;
+        font-weight: 700;
+        margin: 0 0 2px 0;
+        text-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
+        letter-spacing: 0.5px;
+        pointer-events: none;
+      }
+
+      .github-portfolio-card-section .profile-info p {
+        font-size: 0.8rem;
+        font-weight: 400;
+        color: rgba(255, 255, 255, 0.75);
+        margin: 0 0 12px 0;
+        font-family: ui-monospace, SFMono-Regular, "SF Mono", Menlo, Consolas, monospace;
+        pointer-events: none;
+      }
+
+      .github-portfolio-card-section .github-stats {
+        display: flex;
+        gap: 16px;
+        margin-bottom: 16px;
+        padding-top: 8px;
+        border-top: 1px solid rgba(255, 255, 255, 0.15);
+        width: 90%;
+        justify-content: center;
+        pointer-events: none;
+      }
+
+      .github-portfolio-card-section .stat-item {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+      }
+
+      .github-portfolio-card-section .stat-value {
+        font-size: 0.95rem;
+        font-weight: 700;
+        text-shadow: 0 1px 2px rgba(0, 0, 0, 0.2);
+      }
+
+      .github-portfolio-card-section .stat-label {
+        font-size: 0.65rem;
+        text-transform: uppercase;
+        letter-spacing: 0.5px;
+        color: rgba(255, 255, 255, 0.65);
+        margin-top: 2px;
+      }
+
+      .github-portfolio-card-section .github-btn {
+        background: rgba(36, 41, 47, 0.6);
+        border: 1px solid rgba(255, 255, 255, 0.3);
+        color: white;
+        padding: 8px 20px;
+        border-radius: 8px;
+        font-size: 0.8rem;
+        font-weight: 600;
+        cursor: pointer;
+        backdrop-filter: blur(4px);
+        transition: background 0.2s ease, transform 0.2s ease;
+        display: flex;
+        align-items: center;
+        gap: 6px;
+        text-decoration: none;
+        margin-bottom: 12px;
+      }
+
+      .github-portfolio-card-section .github-btn:hover {
+        background: rgba(36, 41, 47, 0.85);
+        transform: scale(1.02);
+      }
+
+      .github-portfolio-card-section .github-icon {
+        width: 14px;
+        height: 14px;
+        fill: currentColor;
+      }
+
+      @media (max-width: 768px) {
+        .github-portfolio-card-section .liquid-glass::after {
+          backdrop-filter: blur(2.1px);
+          -webkit-backdrop-filter: blur(2.1px);
+        }
+      }
+    </style>
+
+    <section class="github-portfolio-card-section">
+      <div class="container">
+        <h2 class="h2" id="github-profile">GitHub Profile</h2>
+        <div class="github-portfolio-shell">
+          <svg width="0" height="0" style="position: absolute;">
+            <defs>
+              <filter id="liquid-glass-distortion" x="0%" y="0%" width="100%" height="100%">
+                <feTurbulence type="fractalNoise" baseFrequency="0.012 0.012" numOctaves="2" seed="92" result="noise" />
+                <feGaussianBlur in="noise" stdDeviation="2" result="blurred" />
+                <feDisplacementMap in="SourceGraphic" in2="blurred" scale="85" xChannelSelector="R" yChannelSelector="G" />
+              </filter>
+            </defs>
+          </svg>
+
+          <div class="liquid-glass" id="glass-card">
+            <div class="profile-card-content">
+              <div class="profile-avatar-border">
+                <img src="https://github.com/bzogo1.png" alt="bzogo1 profile avatar" />
+              </div>
+
+              <div class="profile-info">
+                <h2>Bogdan Zogovic</h2>
+                <p>@bzogo1</p>
+              </div>
+
+              <div class="github-stats">
+                <div class="stat-item">
+                  <span class="stat-value">1</span>
+                  <span class="stat-label">Repo</span>
+                </div>
+                <div class="stat-item">
+                  <span class="stat-value">1</span>
+                  <span class="stat-label">Follower</span>
+                </div>
+              </div>
+
+              <a class="github-btn" href="https://github.com/bzogo1" target="_blank" rel="noopener noreferrer">
+                <svg class="github-icon" viewBox="0 0 16 16" aria-hidden="true">
+                  <path fill-rule="evenodd" d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82.64-.18 1.32-.27 2-.27.68 0 1.36.09 2 .27 1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.013 8.013 0 0016 8c0-4.42-3.58-8-8-8z"></path>
+                </svg>
+                Follow
+              </a>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
 
 <section class="contact">
   <div class="container">
