@@ -178,11 +178,12 @@ if (githubGlassCard) {
   const setCardOffsets = (x, y) => {
     const shell = githubGlassCard.closest(".github-portfolio-shell");
     const shellRect = shell ? shell.getBoundingClientRect() : null;
-    const cardRect = githubGlassCard.getBoundingClientRect();
+    const cardWidth = githubGlassCard.offsetWidth || githubGlassCard.getBoundingClientRect().width;
+    const cardHeight = githubGlassCard.offsetHeight || githubGlassCard.getBoundingClientRect().height;
 
-    if (shellRect && cardRect) {
-      const maxX = Math.max(0, (shellRect.width - cardRect.width) / 2);
-      const maxY = Math.max(0, (shellRect.height - cardRect.height) / 2);
+    if (shellRect) {
+      const maxX = Math.max(0, (shellRect.width - cardWidth) / 2);
+      const maxY = Math.max(0, (shellRect.height - cardHeight) / 2);
       const nextX = clamp(x, -maxX, maxX);
       const nextY = clamp(y, -maxY, maxY);
       githubGlassCard.style.setProperty("--card-x", `${nextX}px`);
@@ -209,6 +210,7 @@ if (githubGlassCard) {
     dragStartY = event.clientY;
     startOffsetX = x;
     startOffsetY = y;
+    document.body.style.userSelect = "none";
   });
 
   githubGlassCard.addEventListener("pointermove", (event) => {
@@ -216,6 +218,7 @@ if (githubGlassCard) {
       return;
     }
 
+    event.preventDefault();
     const deltaX = event.clientX - dragStartX;
     const deltaY = event.clientY - dragStartY;
     setCardOffsets(startOffsetX + deltaX, startOffsetY + deltaY);
@@ -228,6 +231,7 @@ if (githubGlassCard) {
 
     isDragging = false;
     githubGlassCard.classList.remove("dragging");
+    document.body.style.userSelect = "";
   };
 
   githubGlassCard.addEventListener("pointerup", stopDragging);

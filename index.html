@@ -566,21 +566,22 @@
         isolation: isolate;
         position: relative;
         box-shadow: 0 24px 96px rgba(31, 38, 135, 0.21), inset 0 1px 0 rgba(255, 255, 255, 0.5);
-        cursor: grab;
-        transition: all 300ms cubic-bezier(0.4, 0.0, 0.2, 1);
+        cursor: none !important;
+        transition: none;
         display: flex;
         flex-direction: column;
         align-items: center;
         justify-content: space-between;
         box-sizing: border-box;
-        will-change: transform, left, top;
+        will-change: transform;
         transform: translate(var(--card-x), var(--card-y)) scale(var(--scale-factor));
         user-select: none;
         touch-action: none;
       }
 
+      .github-portfolio-card-section .liquid-glass:hover,
       .github-portfolio-card-section .liquid-glass.dragging {
-        cursor: grabbing;
+        cursor: none !important;
       }
 
       .github-portfolio-card-section .liquid-glass::before {
