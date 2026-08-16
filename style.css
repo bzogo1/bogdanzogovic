@@ -1156,7 +1156,7 @@ body.light .signatures {
   opacity: 1;
 }
 
-body.dark .footer-link img {
+body.dark .footer-link.social-invert img {
   filter: invert(1);
 }
 
