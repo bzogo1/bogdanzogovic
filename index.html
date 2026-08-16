@@ -539,6 +539,7 @@
       }
 
       .github-portfolio-card-section .github-portfolio-shell {
+        position: relative;
         width: 100%;
         min-height: 360px;
         display: flex;
@@ -550,20 +551,44 @@
         background-position: center;
         background-repeat: no-repeat;
         box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.2);
+        overflow: hidden;
+      }
+
+      .github-portfolio-card-section .github-portfolio-shell::before {
+        content: "";
+        position: absolute;
+        width: 420px;
+        max-width: 90%;
+        height: 320px;
+        border-radius: 34px;
+        background: linear-gradient(
+          135deg,
+          rgba(255, 255, 255, 0.3),
+          rgba(140, 223, 255, 0.18),
+          rgba(126, 92, 255, 0.2),
+          rgba(255, 255, 255, 0.2),
+          rgba(255, 255, 255, 0.12)
+        );
+        background-size: 180% 180%;
+        filter: blur(18px) saturate(1.25);
+        opacity: 0.9;
+        pointer-events: none;
+        transform: scale(1.08);
       }
 
       .github-portfolio-card-section .liquid-glass {
         --scale-factor: 1;
+        position: relative;
+        z-index: 1;
         width: 273px;
         height: 280px;
         min-height: 310px;
         padding: 33px;
         border-radius: 28px;
         isolation: isolate;
-        position: relative;
         box-shadow: 0 24px 96px rgba(31, 38, 135, 0.21), inset 0 1px 0 rgba(255, 255, 255, 0.5);
         cursor: grab;
-        transition: all 300ms cubic-bezier(0.4, 0.0, 0.2, 1);
+        transition: transform 300ms cubic-bezier(0.4, 0.0, 0.2, 1), box-shadow 300ms ease;
         display: flex;
         flex-direction: column;
         align-items: center;
@@ -572,6 +597,13 @@
         will-change: transform, left, top;
         transform: scale(var(--scale-factor));
         user-select: none;
+        -webkit-user-drag: none;
+        touch-action: none;
+      }
+
+      .github-portfolio-card-section .liquid-glass.dragging {
+        cursor: grabbing;
+        box-shadow: 0 30px 110px rgba(31, 38, 135, 0.35), inset 0 1px 0 rgba(255, 255, 255, 0.65);
       }
 
       .github-portfolio-card-section .liquid-glass::before {
@@ -710,6 +742,10 @@
         transform: scale(1.02);
       }
 
+      .github-portfolio-card-section .github-btn:active {
+        transform: scale(0.98);
+      }
+
       .github-portfolio-card-section .github-icon {
         width: 14px;
         height: 14px;
@@ -835,27 +871,69 @@
   });
 </script>
 
-    <footer class="footer">
-      <div class="container">
-        <div class="footer-content">
-          <!-- Update href and src attributes -->
-          <nav>
-            <ol class="footer-links">
-              <li class="footer-link social-invert">
-                <a title="TikTok" href="https://tiktok.com/@photography.bz" target="_blank" rel="noopener"
-                  ><img
-                    loading="lazy"
-                    src="assets/images/social-links/tiktok.png"
-                    alt="TikTok"
-                /></a>
-              </li>
-              <li class="footer-link social-invert">
-                <a title="GitHub" href="https://github.com/Axion-Industries" target="_blank" rel="noopener"
-                  ><img
-                    loading="lazy"
-                    src="assets/images/social-links/github.svg"
-                    alt="GitHub"
-                /></a>
+    <script>
+      const githubCard = document.querySelector('.github-portfolio-card-section .liquid-glass');
+      const githubShell = document.querySelector('.github-portfolio-card-section .github-portfolio-shell');
+
+      if (githubCard && githubShell) {
+        let isDragging = false;
+        let startX = 0;
+        let startY = 0;
+        let originX = 0;
+        let originY = 0;
+
+        const clamp = (value, min, max) => Math.min(Math.max(value, min), max);
+
+        const setCardPosition = (x, y) => {
+          const maxX = Math.max(0, githubShell.clientWidth - githubCard.offsetWidth);
+          const maxY = Math.max(0, githubShell.clientHeight - githubCard.offsetHeight);
+
+          githubCard.style.left = `${clamp(x, 0, maxX)}px`;
+          githubCard.style.top = `${clamp(y, 0, maxY)}px`;
+        };
+
+        const stopDragging = () => {
+          isDragging = false;
+          githubCard.classList.remove('dragging');
+        };
+
+        githubCard.addEventListener('pointerdown', (event) => {
+          if (event.target.closest('a')) return;
+
+          isDragging = true;
+          githubCard.classList.add('dragging');
+          githubCard.setPointerCapture(event.pointerId);
+          startX = event.clientX;
+          startY = event.clientY;
+          originX = githubCard.offsetLeft || 0;
+          originY = githubCard.offsetTop || 0;
+        });
+
+        githubCard.addEventListener('pointermove', (event) => {
+          if (!isDragging) return;
+
+          const deltaX = event.clientX - startX;
+          const deltaY = event.clientY - startY;
+          setCardPosition(originX + deltaX, originY + deltaY);
+        });
+
+        githubCard.addEventListener('pointerup', stopDragging);
+        githubCard.addEventListener('pointercancel', stopDragging);
+        githubCard.addEventListener('lostpointercapture', stopDragging);
+
+        githubCard.addEventListener('click', (event) => {
+          if (isDragging) {
+            event.preventDefault();
+            event.stopPropagation();
+          }
+        });
+
+        const initialLeft = (githubShell.clientWidth - githubCard.offsetWidth) / 2;
+        const initialTop = (githubShell.clientHeight - githubCard.offsetHeight) / 2;
+        githubCard.style.left = `${initialLeft}px`;
+        githubCard.style.top = `${initialTop}px`;
+      }
+    </script>
               </li>
               <li class="footer-link social-fixed">
                 <a title="GitLab" href="https://gitlab.com/Axion-Industries" target="_blank" rel="noopener"
