@@ -28,17 +28,6 @@
         font-weight: 300;
         opacity: 0.9;
     }
-    .status-pill {
-        display: inline-block;
-        padding: 6px 20px;
-        background: rgba(255, 255, 255, 0.03);
-        border: 1px solid rgba(255, 255, 255, 0.15);
-        border-radius: 30px;
-        font-size: 0.65rem;
-        letter-spacing: 0.25em;
-        text-transform: uppercase;
-        transition: all 1.5s cubic-bezier(0.4, 0, 0.2, 1);
-    }
     .hud-bottom {
         display: flex;
         justify-content: space-between;
@@ -73,25 +62,17 @@
 <div id="vignette"></div>
 <div id="overlay">
     <div class="header">
-        <div class="title" id="main-title">Stable Singularity</div>
-        <div class="status-pill" id="status-text">Topology: Nominal</div>
+        <div class="title" id="main-title">404</div>
     </div>
     <div class="hud-bottom">
-        <div>
-            <div class="metric">MASS_INDEX: <span class="val">4.2M SOL</span></div>
-            <div class="metric">LENSING: <span class="val" id="lensing-val">SCHWARZSCHILD</span></div>
-        </div>
-        <div style="text-align: right">
-            <div class="metric">RELATIVITY: <span class="val" id="vel-val">0.45c</span></div>
-            <div class="metric">RADIATION: <span class="val">DETECTION ON</span></div>
-        </div>
+        <div>bogdanzogovic.vercel.app</div>
+        <div style="text-align: right">Bogdan Zogovic</div>
     </div>
 </div>
 
 <script type="module">
     import * as THREE from 'three';
     import { OrbitControls } from 'three/addons/controls/OrbitControls.js';
-    import gsap from 'gsap';
 
     const scene = new THREE.Scene();
     const camera = new THREE.PerspectiveCamera(40, window.innerWidth / window.innerHeight, 0.1, 1000);
@@ -264,54 +245,7 @@
     }
     scene.add(instancedDisk);
 
-    const config = [
-        { 
-            title: "Stable Singularity", status: "Topology: Nominal", 
-            morph: 0.1, compress: 1.0, intensity: 1.0, rotate: 0.4, camY: 25, camDist: 85, orbit: 1.0,
-            color: "#00f3ff", vel: "0.45c"
-        },
-        { 
-            title: "Accretion Turbulence", status: "Topology: Fluctuating", 
-            morph: 4.5, compress: 1.15, intensity: 1.4, rotate: 1.5, camY: 45, camDist: 95, orbit: 1.8,
-            color: "#ffaa00", vel: "0.78c"
-        },
-        { 
-            title: "Relativistic Collapse", status: "Topology: Critical", 
-            morph: 0.8, compress: 0.38, intensity: 3.5, rotate: 5.0, camY: 12, camDist: 55, orbit: 4.5,
-            color: "#ff0044", vel: "0.99c"
-        }
-    ];
-
-    let stateIdx = 0;
-    const mainTitle = document.getElementById('main-title');
-    const statusText = document.getElementById('status-text');
-    const velVal = document.getElementById('vel-val');
     const camControl = { distance: 85 };
-
-    function transition() {
-        stateIdx = (stateIdx + 1) % config.length;
-        const s = config[stateIdx];
-        const tl = gsap.timeline({ defaults: { duration: 4.0, ease: "power2.inOut" } });
-        tl.to(diskMaterial.uniforms.uMorph, { value: s.morph }, 0);
-        tl.to(diskMaterial.uniforms.uCompression, { value: s.compress }, 0);
-        tl.to(diskMaterial.uniforms.uIntensity, { value: s.intensity }, 0);
-        tl.to(diskMaterial.uniforms.uOrbitScale, { value: s.orbit }, 0);
-        tl.to(auraMat.uniforms.uIntensity, { value: s.intensity }, 0);
-        tl.to(controls, { autoRotateSpeed: s.rotate }, 0);
-        tl.to(camera.position, { y: s.camY }, 0);
-        tl.to(camControl, { distance: s.camDist }, 0);
-        gsap.to([mainTitle, statusText, '.val'], { opacity: 0, duration: 0.8, onComplete: () => {
-            mainTitle.innerText = s.title;
-            statusText.innerText = s.status;
-            statusText.style.color = s.color;
-            statusText.style.borderColor = s.color;
-            velVal.innerText = s.vel;
-            velVal.style.color = s.color;
-            gsap.to([mainTitle, statusText, '.val'], { opacity: 1, duration: 1.2 });
-        }});
-    }
-
-    setInterval(transition, 10000);
 
     const clock = new THREE.Clock();
     function animate() {
