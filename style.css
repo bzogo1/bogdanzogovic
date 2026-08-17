@@ -708,6 +708,9 @@ body.light .header {
 }
 
 .hero-card {
+  --tilt-x: 12deg;
+  --tilt-y: -18deg;
+  --lift: 0px;
   position: relative;
   width: clamp(250px, 30vw, 360px);
   aspect-ratio: 2 / 3;
@@ -715,7 +718,7 @@ body.light .header {
   border: 1px solid rgba(255, 255, 255, 0.2);
   overflow: hidden;
   transform-style: preserve-3d;
-  transform: rotateX(12deg) rotateY(-18deg);
+  transform: rotateX(var(--tilt-x)) rotateY(var(--tilt-y)) translateY(var(--lift));
   background:
     linear-gradient(135deg, rgba(2, 6, 23, 0.38), rgba(2, 6, 23, 0.8)),
     url("assets/images/hero-bg.webp") center/cover no-repeat;
@@ -744,7 +747,6 @@ body.light .header {
 
 .hero-card:hover,
 .hero-card:focus-within {
-  transform: rotateX(10deg) rotateY(-12deg) translateY(-8px);
   box-shadow: 0 40px 85px -20px rgba(0, 0, 0, 0.72);
 }
 

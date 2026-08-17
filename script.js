@@ -3,6 +3,32 @@ const interactiveEls = document.querySelectorAll(
   "a, button, input, textarea, select, [role='button']"
 );
 
+const heroCard = document.querySelector(".hero-card");
+
+if (heroCard) {
+  const resetHeroCard = () => {
+    heroCard.style.setProperty("--tilt-x", "12deg");
+    heroCard.style.setProperty("--tilt-y", "-18deg");
+    heroCard.style.setProperty("--lift", "0px");
+  };
+
+  heroCard.addEventListener("pointermove", (event) => {
+    const rect = heroCard.getBoundingClientRect();
+    const x = (event.clientX - rect.left) / rect.width;
+    const y = (event.clientY - rect.top) / rect.height;
+
+    const rotateY = (-18 + x * 36).toFixed(2);
+    const rotateX = (18 - y * 36).toFixed(2);
+
+    heroCard.style.setProperty("--tilt-x", `${rotateX}deg`);
+    heroCard.style.setProperty("--tilt-y", `${rotateY}deg`);
+    heroCard.style.setProperty("--lift", "-8px");
+  });
+
+  heroCard.addEventListener("pointerleave", resetHeroCard);
+  heroCard.addEventListener("pointercancel", resetHeroCard);
+}
+
 if (cursor && window.matchMedia("(pointer: fine)").matches) {
   const state = {
     x: window.innerWidth / 2,
