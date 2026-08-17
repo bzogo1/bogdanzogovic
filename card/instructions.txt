@@ -1,1 +1,0 @@
-Please add a new element onto the first section on the website, the background picture and "full stack engineer bogdan zogovic" whatever. Add the element files that are in the "card" folder, add that element to the right of the main text.

@@ -1,0 +1,1 @@
+Can you please remove the current plain black background and add the custom background files that are in the "background" folder, make it cover the background of the entire website, not lock to the user or anything, but add it everywhere except the top section, the "full stack developer bogdan zogovic" thing, keep that the same.
