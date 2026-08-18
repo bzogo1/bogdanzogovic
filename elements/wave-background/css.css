@@ -1,0 +1,327 @@
+/*
+global
+*/
+*, *::before, *::after {
+    margin: 0;
+    padding: 0;
+    border: 0;
+    box-sizing: border-box;
+}
+
+*:focus {
+    outline: none;
+}
+
+body {
+    height: 100vh;
+}
+
+/*
+beach
+*/
+@property --cp { syntax: '<percentage>'; inherits: false; initial-value: 100%; }
+
+.beach {
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(
+        to right,
+        #004a44 0%,
+        #03615b 5.26%,
+        #0a6c66 10.53%,
+        #027c73 15.79%,
+        #028a7f 21.05%,
+        #059c8e 26.32%,
+        #39a997 31.58%,
+        #4aae9f 36.84%,
+        #84b7a2 42.11%,
+        #b5aa8c 47.37%,
+        #dbb89b 52.63%,
+        #edc1a8 57.89%,
+        #fed0b2 63.16%,
+        #fddbc2 68.42%,
+        #fedfc7 73.68%,
+        #fee6d3 78.95%,
+        #fee1d1 94.74%,
+        #fcdecd 100%
+    );
+    position: relative;
+    overflow: hidden;
+}
+
+.beach .wave {
+    --_wave-shape-duration: 10s;
+    --_wave-shape-delay: 0s;
+
+    --_wave-move-duration: calc(var(--_wave-shape-duration) * .75);
+    --_wave-move-delay: 0s;
+
+    --_wave-spray-duration: var(--_wave-move-duration);
+    --_wave-spray-delay: var(--_wave-move-delay);
+
+    --_cp-factor: 1.0;
+    --_cp: calc(var(--cp) * var(--_cp-factor));
+
+    --_center: 50%;
+    --_width: 50%;
+
+    --_shape-line-p-x: 96%;
+    --_shape-line-p-y: 0%;
+    --_shape-curve-p-x: 87%;
+    --_shape-curve-p-y: 40%;
+    --_shape-curve-c-x: var(--_cp);
+    --_shape-curve-c-y: 22%;
+    --_shape-smooth-p-x: 84%;
+    --_shape-smooth-p-y: 100%;
+
+    --_shape-clip: shape(
+        from 0% 0%,
+        line to var(--_shape-line-p-x) var(--_shape-line-p-y),
+        curve to var(--_shape-curve-p-x) var(--_shape-curve-p-y) with var(--_shape-curve-c-x) var(--_shape-curve-c-y) from origin,
+        smooth to var(--_shape-smooth-p-x) var(--_shape-smooth-p-y),
+        line to 0% 100%,
+        close
+    );
+
+    --_shape-offset: shape(
+        from var( --_shape-line-p-x ) var( --_shape-line-p-y ),
+        curve to var( --_shape-curve-p-x ) var( --_shape-curve-p-y ) with var( --_shape-curve-c-x ) var( --_shape-curve-c-y ) from origin,
+        smooth to var( --_shape-smooth-p-x ) var( --_shape-smooth-p-y )
+    );
+
+    --_opacity-min: 0.45;
+    --_opacity-max: 1.00;
+
+    --_spray-scale-min: 0.25;
+    --_spray-scale-max: 0.90;
+
+    position: absolute;
+    left: calc(var(--_center) - var(--_width));
+    width: var(--_width);
+    height: 100%;
+
+    background: 
+        linear-gradient(to right, rgba(0,0,0, 0.00) 70%, rgba(255,255,255, 0.44)  90%),
+        linear-gradient(to right, rgba(0,0,0, 0.00)  0%, rgba(  0,255,224, 0.15) 100%);
+
+    clip-path: var(--_shape-clip);
+
+    animation: 
+        beach-wave-move-animation var(--_wave-move-duration) infinite ease-in-out,
+        beach-wave-shape-animation var(--_wave-shape-duration) infinite ease-in-out;
+
+
+    animation-delay: 
+        var(--_wave-move-delay),
+        var(--_wave-shape-delay);
+
+    will-change: transform, opacity;
+}
+
+.beach .wave i {
+    display: none;
+}
+
+@supports (z-index: sibling-index()) and (z-index: sibling-count()) {
+    .beach .wave i {
+        --_i: sibling-index();
+        --_l: sibling-count();
+
+        --_offset-distance-min: 0%;
+        --_offset-distance-max: 100%;
+
+        display: block;
+        position: absolute;
+
+        offset-path: var(--_shape-offset);
+        offset-distance: calc(var(--_offset-distance-min) + (var(--_i) - 1) / (var(--_l) - 1) * (var( --_offset-distance-max) - var(--_offset-distance-min)));
+
+        width: 16rem;
+        aspect-ratio: 1 / 1;
+
+        transform-origin: center left;
+
+        background: radial-gradient(closest-side, rgba(255,255,255, 0.65) 0%, rgba(255,255,255, 0.00) 100%);
+
+        will-change: transform, opacity;
+
+        animation: beach-wave-spray-animation var(--_wave-spray-duration) infinite ease-in-out;
+        animation-delay: var(--_wave-spray-delay);
+    }
+}
+
+.beach .wave.wave--1 {
+    --_wave-shape-duration: 10s;
+    --_wave-shape-delay: 0s;
+
+    --_wave-move-duration: calc(var(--_wave-shape-duration) * .75);
+    --_wave-move-delay: 0s;
+
+    --_cp-factor: 1.0;
+
+    --_width: 50%;
+
+    --_shape-line-p-x: 96%;
+    --_shape-curve-p-x: 87%;
+    --_shape-curve-p-y: 40%;
+    --_shape-smooth-p-x: 84%;
+    --_shape-smooth-p-y: 100%;
+
+    --_spray-scale-min: 0.25;
+    --_spray-scale-max: 0.90;
+}
+.beach .wave.wave--2 {
+    --_wave-shape-duration: 11s;
+    --_wave-shape-delay: -2s;
+
+    --_wave-move-duration: calc(var(--_wave-shape-duration) * .80);
+    --_wave-move-delay: -2s;
+
+    --_cp-factor: 0.9;
+
+    --_width: 40%;
+
+    --_shape-line-p-x: 100%;
+    --_shape-curve-p-x: 77%;
+    --_shape-curve-p-y: 50%;
+    --_shape-smooth-p-x: 70%;
+    --_shape-smooth-p-y: 100%;
+
+    --_spray-scale-min: 0.20;
+    --_spray-scale-max: 0.95;
+}
+.beach .wave.wave--3 {
+    --_wave-shape-duration: 14s;
+    --_wave-shape-delay: -4s;
+
+    --_wave-move-duration: calc(var(--_wave-shape-duration) * .88);
+    --_wave-move-delay: -4s;
+
+    --_cp-factor: 0.95;
+
+    --_width: 30%;
+
+    --_shape-line-p-x: 80%;
+    --_shape-curve-p-x: 92%;
+    --_shape-curve-p-y: 55%;
+    --_shape-smooth-p-x: 44%;
+    --_shape-smooth-p-y: 100%;
+
+    --_spray-scale-min: 0.34;
+    --_spray-scale-max: 0.88;
+}
+.beach .wave.wave--4 {
+    --_wave-shape-duration: 13s;
+    --_wave-shape-delay: -6s;
+
+    --_wave-move-duration: calc(var(--_wave-shape-duration) * .78);
+    --_wave-move-delay: -6s;
+
+    --_cp-factor: 0.85;
+
+    --_width: 45%;
+
+    --_shape-line-p-x: 93%;
+    --_shape-curve-p-x: 85%;
+    --_shape-curve-p-y: 39%;
+    --_shape-smooth-p-x: 81%;
+    --_shape-smooth-p-y: 100%;
+
+    --_spray-scale-min: 0.55;
+    --_spray-scale-max: 0.98;
+} 
+
+/*
+animations
+*/
+@keyframes beach-wave-shape-animation {
+    50% {
+        --cp: 70%;
+    }
+}
+
+@keyframes beach-wave-move-animation {
+    0%,
+    100% {
+        transform: translateX(0%);
+        opacity: var(--_opacity-min);
+    }
+
+    50% {
+        transform: translateX(var(--_center));
+        opacity: var(--_opacity-max);
+    }
+}
+
+@keyframes beach-wave-spray-animation {
+    0%,
+    100% {
+        opacity: 0.25;
+        transform: scale(var(--_spray-scale-min));
+    }
+
+    50% {
+        opacity: 1.00;
+        transform: scale(var(--_spray-scale-max));
+    }
+}
+
+/*
+Author badge
+Small signature link back to niklasknaack.de.
+Not part of the actual experiment.
+*/
+.nk {
+    --_size: 48px;
+    --_padding: 1rem;
+    --_blur-filter: 3px;
+    --_color-bg-start: rgba(0,0,0,0.55);
+    --_color-bg-end: rgba(0,0,0,0.80);
+    --_color-bg: var(--_color-bg-start);
+    --_color-logo-start: rgba(255,255,255,0.33); 
+    --_color-logo-end: rgba(255,255,255,1.00); 
+    --_color-logo: var(--_color-logo-start);
+    --_logo-url: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 251 140'%3E%3Cpath fill='black' d='M 97.35 70 L 95.7 67.8 Q 95.421875 67.47421875 95.15 67.1 94.7875 66.66484375 94.4 66.2 92.9564453125 64.3546875 91.5 62.5 L 70 35.1 69.95 35 42.55 0 0 0 0 140 42.55 140 42.55 62.5 42.6 62.5 103.25 140 152.35 140 140 124.25 139.95 124.15 Q 136.15 119.4 132.4 114.6 131.45 113.4 130.55 112.2 129.8 111.3 129.15 110.4 L 97.55 70 152.35 0 97.35 0 97.35 70 M 201.3 0 L 198.05 4.2 Q 197.65 4.65 197.3 5.15 L 195 8.1 195 7.95 170.75 39.15 170.7 39.1 170.6 39.25 146.6 70 146.65 70.05 158.25 84.9 Q 163.1 91.15 168.05 97.4 168.3 97.75 168.6 98.15 168.8 98.4 169 98.7 L 170.25 100.3 170.6 100.85 170.7 100.95 170.75 100.9 171.6 102 Q 171.75 102.15 171.9 102.35 172.05 102.6 172.25 102.85 173 103.8 173.8 104.8 L 201.2 140 250.8 140 203.2 80.25 Q 202.95 79.95 202.75 79.7 L 201.3 77.95 201.3 77.85 195.1 70.05 195.1 70 250.75 0 201.3 0 Z'/%3E%3C/svg%3E");
+    --_logo-size: 56%;
+    position: fixed;
+    right: var(--_padding);
+    bottom: var(--_padding);
+    z-index: 9999;
+    display: block;
+    width: var(--_size);
+    aspect-ratio: 1;
+    border-radius: 50%;
+}
+
+.nk:before,
+.nk:after { 
+    content: ''; 
+    position: absolute; 
+    transition: background-color 250ms ease-in-out;
+}
+.nk:before {
+    inset: 0;
+    background-color: var(--_color-bg);
+    border-radius: inherit;
+    backdrop-filter: blur(var(--_blur-filter));
+    -webkit-backdrop-filter: blur(var(--_blur-filter));
+    mask:
+        linear-gradient(#000 0 0),
+        var(--_logo-url) center / var(--_logo-size) auto no-repeat;
+    -webkit-mask:
+        linear-gradient(#000 0 0),
+        var(--_logo-url) center / var(--_logo-size) auto no-repeat;
+    mask-composite: exclude;
+    -webkit-mask-composite: xor; 
+}
+.nk:after { 
+    inset: calc((100% - var(--_logo-size)) * .5);
+    background-color: var(--_color-logo);
+    mask: var(--_logo-url) center / contain no-repeat;
+    -webkit-mask: var(--_logo-url) center / contain no-repeat;
+}
+
+.nk:hover {
+    --_color-bg: var(--_color-bg-end);
+    --_color-logo: var(--_color-logo-end);
+}
