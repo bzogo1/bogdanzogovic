@@ -9,17 +9,22 @@
   "redirects": [
     {
       "source": "/metrics",
-      "destination": "/stats/",
+      "destination": "/404",
       "permanent": true
     },
     {
       "source": "/stats",
-      "destination": "/stats/",
+      "destination": "/404",
+      "permanent": true
+    },
+    {
+      "source": "/stats/",
+      "destination": "/404",
       "permanent": true
     },
     {
       "source": "/pages/stats",
-      "destination": "/stats/",
+      "destination": "/404",
       "permanent": true
     },
     {
