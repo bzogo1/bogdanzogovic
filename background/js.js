@@ -35,6 +35,8 @@ var ctx = canvas.getContext('2d');
 
 var grid = null;
 var rafId = null;
+var pointer = null;
+var activity = 0;
 var waves = [];
 var maskRects = [];
 var frameCount = 0;
@@ -160,20 +162,10 @@ function tick() {
   var now = performance.now();
 
   ctx.clearRect(0, 0, width, height);
-
-  var bgGradient = ctx.createRadialGradient(
-    width * 0.5,
-    height * 0.25,
-    0,
-    width * 0.5,
-    height * 0.8,
-    Math.max(width, height) * 1.1
-  );
-  bgGradient.addColorStop(0, 'rgba(22, 30, 46, 0.96)');
-  bgGradient.addColorStop(0.52, 'rgba(11, 13, 18, 0.94)');
-  bgGradient.addColorStop(1, 'rgba(4, 5, 10, 1)');
-  ctx.fillStyle = bgGradient;
+  ctx.fillStyle = '#080808';
   ctx.fillRect(0, 0, width, height);
+
+  activity *= 0.93;
 
   frameCount++;
   if (frameCount % 10 === 0) {
@@ -201,6 +193,24 @@ function tick() {
     }
 
     var pointerInfluence = 0;
+    if (pointer && activity > 0.001) {
+      var dx = shape.x - pointer.x;
+      var dy = shape.y - pointer.y;
+      var dist = Math.sqrt(dx * dx + dy * dy);
+      pointerInfluence = smoothstep(1 - dist / radius) * activity;
+
+      if (pointerInfluence > 0.05 && !shape.hovered) {
+        shape.hovered = true;
+        shape.maxScale = rnd(minHoverScale, maxHoverScale);
+        shape.angle = rnd(0, Math.PI * 2);
+        if (shape.type === 'star') Object.assign(shape, randomStarProps());
+      } else if (pointerInfluence <= 0.05) {
+        shape.hovered = false;
+      }
+    } else {
+      shape.hovered = false;
+    }
+
     var waveInfluence = 0;
     for (var j = 0; j < waves.length; j++) {
       var wave = waves[j];
@@ -233,6 +243,15 @@ function tick() {
   rafId = requestAnimationFrame(tick);
 }
 
+function onMove(e) {
+  pointer = { x: e.clientX, y: e.clientY };
+  activity = 1;
+}
+
+function onClick(e) {
+  triggerWave(e.clientX, e.clientY);
+}
+
 function triggerWave(x, y) {
   x = x !== undefined ? x : window.innerWidth / 2;
   y = y !== undefined ? y : window.innerHeight / 2;
@@ -246,4 +265,7 @@ init();
 rafId = requestAnimationFrame(tick);
 
 window.addEventListener('resize', init);
+window.addEventListener('pointermove', onMove);
+window.addEventListener('click', onClick);
+
 triggerWave();
