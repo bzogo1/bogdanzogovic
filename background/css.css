@@ -1,10 +1,78 @@
-body {
+html, body {
   margin: 0;
-  background: black;
+  min-height: 100%;
 }
 
-canvas {
+body {
+  position: relative;
+  background: transparent;
+  background-color: transparent;
+}
+
+body.dark,
+body.light {
+  background: transparent;
+  background-color: transparent;
+}
+
+canvas.site-background-canvas {
+  position: fixed;
+  inset: 0;
   display: block;
-  width: 100%;
-  height: 100%;
+  width: 100vw;
+  height: 100vh;
+  z-index: 0;
+  pointer-events: none;
+  opacity: 0.95;
+}
+
+header,
+main,
+footer,
+.menu-btn-container,
+.context-menu,
+.cursor {
+  position: relative;
+  z-index: 1;
+}
+
+.site-background-canvas {
+  filter: saturate(1.15) brightness(0.92);
+}
+
+main,
+footer,
+section,
+article,
+aside,
+.contact,
+.client,
+.about-me,
+.skills,
+.testimonials,
+.work,
+.education {
+  position: relative;
+  z-index: 1;
+}
+
+.header {
+  position: relative;
+  z-index: 2;
+  isolation: isolate;
+}
+
+.header::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  background: rgba(0, 0, 0, 0.06);
+}
+
+.header .container,
+.header .menu-btn-container,
+.header .nav {
+  position: relative;
+  z-index: 2;
 }

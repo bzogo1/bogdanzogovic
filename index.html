@@ -55,7 +55,9 @@
       crossorigin
     />
 
-    <link rel="stylesheet" href="style.css"  />
+    <link rel="stylesheet" href="style.css" />
+    <link rel="stylesheet" href="background/css.css" />
+    <script src="background/js.js" defer></script>
     <script src="script.js" defer></script>
 
     <!-- Your name here -->
@@ -68,6 +70,8 @@
       const theme = localStorage.getItem("theme") || "dark";
       document.body.classList.add(theme);
     </script>
+
+    <canvas class="site-background-canvas" aria-hidden="true"></canvas>
 
     <div class="cursor" aria-hidden="true"></div>
 

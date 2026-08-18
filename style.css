@@ -100,7 +100,8 @@ html {
 body {
   font-size: var(--text-medium);
   color: var(--body);
-  background-color: var(--bg-color-primary);
+  background: transparent;
+  background-color: transparent;
   line-height: 1.4;
   text-rendering: optimizeLegibility;
   overflow-x: hidden;
