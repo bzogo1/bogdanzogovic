@@ -1,3 +1,4 @@
+/* Light theme (default) */
 :root {
   /* Claymorphism Color Palette */
   --bg-color: #e6eef5;
@@ -16,6 +17,24 @@
     -6px -6px 12px rgba(255, 255, 255, 0.1);
 }
 
+/* Dark theme */
+body.dark {
+  --bg-color: #1a1a1a;
+  --text-main: #e0e0e0;
+  --text-muted: #999;
+  --clay-base: #2a2a2a;
+  --clay-light: #3a3a3a;
+  --clay-dark: #0a0a0a;
+  --clay-accent: #e0e0e0;
+  /* Chunky Shadows for dark theme */
+  --shadow-outset: 12px 12px 24px rgba(0, 0, 0, 0.6),
+    -12px -12px 24px rgba(255, 255, 255, 0.05);
+  --shadow-inset: inset 4px 4px 8px rgba(255, 255, 255, 0.05),
+    inset -4px -4px 8px rgba(0, 0, 0, 0.5);
+  --shadow-btn-outset: 6px 6px 12px rgba(0, 0, 0, 0.5),
+    -6px -6px 12px rgba(255, 255, 255, 0.05);
+}
+
 * {
   margin: 0;
   padding: 0;
@@ -23,7 +42,7 @@
   font-family: "Inter", sans-serif;
 }
 
-body {
+.connect-section {
   background-color: var(--bg-color);
   color: var(--text-main);
   overflow-x: hidden;
@@ -39,6 +58,10 @@ body {
   transition: transform 0.3s ease;
 }
 
+body.dark .clay-box {
+  border-color: rgba(255, 255, 255, 0.1);
+}
+
 /* Spacers for scrolling context */
 .spacer {
   height: 100vh;
@@ -47,6 +70,7 @@ body {
   justify-content: center;
   flex-direction: column;
   text-align: center;
+  background-color: var(--bg-color);
 }
 
 /* Main Section */
@@ -163,6 +187,10 @@ body {
   border: 2px solid rgba(255, 255, 255, 0.5);
 }
 
+body.dark .clay-input-group {
+  border-color: rgba(255, 255, 255, 0.1);
+}
+
 .clay-input {
   flex: 1;
   background: transparent;
@@ -181,7 +209,7 @@ body {
 
 .clay-btn {
   background: var(--clay-accent);
-  color: #fff;
+  color: var(--bg-color);
   border: none;
   border-radius: 12px;
   padding: 0 2rem;
