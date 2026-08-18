@@ -27,9 +27,10 @@ document.addEventListener("DOMContentLoaded", () => {
     ease: "none",
     scrollTrigger: {
       trigger: "#connect-section",
-      start: "center center",
-      end: () => `+=${Math.abs(getScrollAmount())}`, // Duration of scroll
+      start: "top top",
+      end: () => `+=${Math.abs(getScrollAmount()) + window.innerHeight * 0.5}`,
       pin: true,
+      pinSpacing: false,
       scrub: 1,
       invalidateOnRefresh: true // Recalculate on resize
     }
