@@ -78,9 +78,9 @@ body.dark .clay-box {
   display: flex;
   flex-direction: column;
   align-items: center;
-  justify-content: center;
-  min-height: 180vh;
-  padding: 4rem 0;
+  justify-content: flex-start;
+  min-height: auto;
+  padding: 4rem 0 4rem;
   position: relative;
   background-color: var(--bg-color);
   overflow: hidden;
@@ -110,13 +110,19 @@ body.dark .clay-box {
 
 /* Carousel 3D Setup */
 .carousel-viewport {
-  width: 100%;
-  height: 55vh;
+  width: min(100%, 1200px);
+  height: 58vh;
+  min-height: 320px;
   perspective: 1200px;
   display: flex;
   align-items: center;
-  overflow: hidden;
+  overflow-x: auto;
+  overflow-y: hidden;
   margin-bottom: 4rem;
+  background: var(--bg-color);
+  scrollbar-width: none;
+  -ms-overflow-style: none;
+  scroll-snap-type: x proximity;
   /* Fade edges */
   mask-image: linear-gradient(
     to right,
@@ -134,13 +140,19 @@ body.dark .clay-box {
   );
 }
 
+.carousel-viewport::-webkit-scrollbar {
+  display: none;
+}
+
 .carousel-track {
   display: flex;
   align-items: center;
   gap: 3rem;
-  /* Padding ensures items start and end exactly in the center of the screen */
+  width: max-content;
   padding: 0 calc(50vw - 175px);
   transform-style: preserve-3d;
+  will-change: transform;
+  scroll-snap-align: center;
 }
 
 .carousel-item {
