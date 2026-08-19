@@ -1288,9 +1288,9 @@ body.dark .work-links img {
   margin: -145px auto var(--gutter-small);
 }
 
-.coffee-jar,
-.coffee-jar svg {
+.coffee-jar {
   display: block;
+  border: 0;
 }
 
 .contact-content {
