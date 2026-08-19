@@ -1283,16 +1283,14 @@ body.dark .work-links img {
 .coffee-jar {
   display: flex;
   justify-content: center;
-  block-size: 155px;
-  margin-block-end: var(--gutter-small);
-  overflow: hidden;
-}
-
-.coffee-jar svg {
-  display: block;
   inline-size: min(220px, 55vw);
   block-size: 220px;
-  margin-block-start: -2px;
+  margin: -145px auto var(--gutter-small);
+}
+
+.coffee-jar,
+.coffee-jar svg {
+  display: block;
 }
 
 .contact-content {
@@ -1379,6 +1377,7 @@ body.light .signatures {
 
 .contact-form {
   background-color: var(--bg-color-secondary);
+  padding-block-start: 155px;
   border-top-right-radius: var(--gutter-nano);
   border-bottom-right-radius: var(--gutter-nano);
 }
