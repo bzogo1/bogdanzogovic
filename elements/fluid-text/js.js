@@ -30,10 +30,8 @@ import {
   };
 
   const FONT_SCALE = {
-    // The font-size slider maps [SLIDER_MIN .. SLIDER_MAX] → [tiny .. edge-to-edge]
-    SLIDER_MIN: 10,
-    SLIDER_MAX: 100,
-    FULL_WIDTH: 100 // slider value that means "fill viewport width"
+    // Fixed font size - set to 100% of viewport width
+    FULL_WIDTH: 100
   };
 
   const INPUT = {
@@ -47,7 +45,7 @@ import {
     RING_FREQUENCY: 7.0, // spatial frequency of the concentric rings  — must be float
     RING_SPEED_MUL: 9.0, // multiplied by uSpeed to get ring propagation rate — must be float
     DIST_FALLOFF: 2.2, // how fast rings fade with distance
-    AMPLITUDE: 1.8 // peak height contribution
+    AMPLITUDE: 0.0 // disabled - click ripples removed
   };
 
   const MOUSE_SWELL = {
@@ -213,9 +211,8 @@ import {
       // Font size that would make ink exactly as wide as the viewport
       const fullWidthFontSize = MASK.PROBE_FONT_SIZE * (W / inkW);
 
-      // User slider: FONT_SCALE.FULL_WIDTH = edge-to-edge, FONT_SCALE.SLIDER_MIN = tiny
-      const userScaleFraction =
-        +document.getElementById("sl-f").value / FONT_SCALE.FULL_WIDTH;
+      // Fixed font size - set to 100% of viewport width
+      const userScaleFraction = 1.0;
       const finalFontSize = Math.min(
         fullWidthFontSize * userScaleFraction,
         H * MASK.MAX_HEIGHT_FRACTION
@@ -260,12 +257,7 @@ import {
       uDensity: { value: 9.0 },
       uSpeed: { value: 0.28 },
       uTurb: { value: 0.45 },
-      uMask: { value: maskTex },
-      // Ripple slots: xy = normalised origin, z = birth time (-1 = inactive), w = unused
-      uR0: { value: new Vector4(0, 0, -1, 0) },
-      uR1: { value: new Vector4(0, 0, -1, 0) },
-      uR2: { value: new Vector4(0, 0, -1, 0) },
-      uR3: { value: new Vector4(0, 0, -1, 0) }
+      uMask: { value: maskTex }
     };
 
     // ── fragment shader ───────────────────────────────────
@@ -282,7 +274,6 @@ import {
       uniform float     uSpeed;
       uniform float     uTurb;
       uniform sampler2D uMask;
-      uniform vec4      uR0, uR1, uR2, uR3;
  
       // ── palette ────────────────────────────────────────
       const vec3 COLOR_BG   = vec3(${PALETTE.BG.map((v) => v.toFixed(3)).join(
@@ -301,7 +292,7 @@ import {
       const float RIPPLE_RING_FREQ    = ${glslFloat(RIPPLE.RING_FREQUENCY)};
       const float RIPPLE_RING_SPEED   = ${glslFloat(RIPPLE.RING_SPEED_MUL)};
       const float RIPPLE_DIST_FALLOFF = ${glslFloat(RIPPLE.DIST_FALLOFF)};
-      const float RIPPLE_AMPLITUDE    = ${glslFloat(RIPPLE.AMPLITUDE)};
+      const float RIPPLE_AMPLITUDE    = 0.0; // disabled
  
       // ── mouse swell ────────────────────────────────────
       const float SWELL_DIST_FALLOFF = ${glslFloat(MOUSE_SWELL.DIST_FALLOFF)};
@@ -319,19 +310,6 @@ import {
       // Triangle wave — maps any float to [0,1], used for contour bands
       float tri(float x) {
         return abs(fract(x + 0.5) - 0.5) * 2.0;
-      }
- 
-      // Returns the height contribution of one click-ripple.
-      // r.z < 0 means the slot is empty.
-      float ripple(vec4 r, vec2 uv, float t) {
-        if (r.z < 0.0) return 0.0;
-        float age       = t - r.z;
-        float decay     = exp(-age * RIPPLE_DECAY_RATE);
-        float ar        = uRes.x / uRes.y;
-        vec2  delta     = (uv - r.xy) * vec2(ar, 1.0);
-        float dist      = length(delta);
-        float ringPhase = dist * RIPPLE_RING_FREQ - age * uSpeed * RIPPLE_RING_SPEED;
-        return decay * sin(ringPhase) * exp(-dist * RIPPLE_DIST_FALLOFF) * RIPPLE_AMPLITUDE;
       }
  
  
@@ -371,12 +349,6 @@ ${TURB_WAVES.map(turbWaveGLSL).join("\n")}
         h += SWELL_AMPLITUDE
            * exp(-swellDist * SWELL_DIST_FALLOFF)
            * sin(swellDist * SWELL_FREQUENCY - t * SWELL_SPEED_MUL);
- 
-        // ── click ripples ────────────────────────────────
-        h += ripple(uR0, uv, uTime);
-        h += ripple(uR1, uv, uTime);
-        h += ripple(uR2, uv, uTime);
-        h += ripple(uR3, uv, uTime);
  
         // ── contour rendering ────────────────────────────
         float bands     = tri(h * uDensity * CONTOUR_WAVE_SCALE);
@@ -420,62 +392,17 @@ ${TURB_WAVES.map(turbWaveGLSL).join("\n")}
       }, INPUT.REBUILD_DEBOUNCE_MS);
     });
 
-    // ── mouse tracking + custom cursor ───────────────────
-    const cursorEl = document.getElementById("cursor");
-
+    // ── mouse tracking ───────────────────────────────────
     window.addEventListener("mousemove", (e) => {
-      cursorEl.style.left = e.clientX + "px";
-      cursorEl.style.top = e.clientY + "px";
       uniforms.uMouse.value.set(
         e.clientX / innerWidth,
         1 - e.clientY / innerHeight
       );
     });
-    window.addEventListener("mousedown", () => cursorEl.classList.add("big"));
-    window.addEventListener("mouseup", () => cursorEl.classList.remove("big"));
 
-    // ── click ripples ─────────────────────────────────────
-    const rippleSlots = [
-      uniforms.uR0,
-      uniforms.uR1,
-      uniforms.uR2,
-      uniforms.uR3
-    ];
-    let rippleIndex = 0;
+    // ── click ripples removed ────────────────────────────
 
-    window.addEventListener("click", (e) => {
-      if (e.target.closest("#type-input")) return;
-      rippleSlots[rippleIndex % RIPPLE.SLOT_COUNT].value.set(
-        e.clientX / innerWidth,
-        1 - e.clientY / innerHeight,
-        uniforms.uTime.value,
-        1
-      );
-      rippleIndex++;
-    });
-
-    // ── slider controls ───────────────────────────────────
-    document.getElementById("sl-d").addEventListener("input", (e) => {
-      uniforms.uDensity.value = +e.target.value;
-    });
-    document.getElementById("sl-s").addEventListener("input", (e) => {
-      // Slider is 0-100; shader expects 0-1
-      uniforms.uSpeed.value = +e.target.value / 100;
-    });
-    document.getElementById("sl-t").addEventListener("input", (e) => {
-      // Slider is 0-100; shader expects 0-1
-      uniforms.uTurb.value = +e.target.value / 100;
-    });
-    document.getElementById("sl-f").addEventListener("input", () => {
-      buildMask(textField.value);
-      uniforms.uMask.value = maskTex;
-    });
-
-    let paused = false;
-    document.getElementById("btn-p").addEventListener("click", function () {
-      paused = !paused;
-      this.textContent = paused ? "▶" : "⏸";
-    });
+    // ── slider controls removed ──────────────────────────
 
     // ── render loop ───────────────────────────────────────
     let lastTimestamp = null;
@@ -488,7 +415,7 @@ ${TURB_WAVES.map(turbWaveGLSL).join("\n")}
           ? 0
           : Math.min((timestamp - lastTimestamp) / 1000, 0.05);
       lastTimestamp = timestamp;
-      if (!paused) elapsed += dt;
+      elapsed += dt;
       uniforms.uTime.value = elapsed;
       renderer.render(scene, camera);
     })(0);

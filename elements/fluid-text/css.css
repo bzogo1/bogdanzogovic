@@ -59,7 +59,6 @@ body {
   width: 100%;
   height: 100%;
   overflow: hidden;
-  cursor: none;
   background: var(--color-bg);
 }
 
@@ -67,64 +66,6 @@ canvas#three {
   display: block;
   position: fixed;
   inset: 0;
-}
-
-/* ── custom cursor ───────────────────────────────────── */
-#cursor {
-  position: fixed;
-  pointer-events: none;
-  z-index: 100;
-  width: var(--cursor-size-sm);
-  height: var(--cursor-size-sm);
-  border: var(--cursor-border) solid var(--color-ink);
-  border-radius: 50%;
-  transform: translate(-50%, -50%);
-  transition: width 0.1s, height 0.1s;
-}
-#cursor::after {
-  content: "";
-  position: absolute;
-  inset: 2px;
-  background: var(--color-ink);
-  border-radius: 50%;
-}
-#cursor.big {
-  width: var(--cursor-size-lg);
-  height: var(--cursor-size-lg);
-}
-
-/* ── grain ───────────────────────────────────────────── */
-#grain {
-  position: fixed;
-  inset: 0;
-  pointer-events: none;
-  z-index: 2;
-}
-#grain::after {
-  content: "";
-  position: absolute;
-  inset: -60%;
-  width: 220%;
-  height: 220%;
-  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='256' height='256'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.78' numOctaves='4' stitchTiles='stitch'/%3E%3CfeColorMatrix type='saturate' values='0'/%3E%3C/filter%3E%3Crect width='256' height='256' filter='url(%23n)'/%3E%3C/svg%3E");
-  opacity: var(--grain-opacity);
-  mix-blend-mode: overlay;
-  animation: grain-shift var(--grain-anim-speed) steps(var(--grain-anim-steps))
-    infinite;
-}
-@keyframes grain-shift {
-  0% {
-    transform: translate(0, 0);
-  }
-  33% {
-    transform: translate(var(--grain-shift-a), var(--grain-shift-b));
-  }
-  66% {
-    transform: translate(var(--grain-shift-b), var(--grain-shift-c));
-  }
-  100% {
-    transform: translate(0, 0);
-  }
 }
 
 /* ── controls bar ────────────────────────────────────── */
@@ -148,55 +89,9 @@ canvas#three {
   letter-spacing: var(--input-letter-spacing);
   text-transform: uppercase;
   width: var(--input-width);
-  cursor: none;
 }
 #text-field::placeholder {
   color: var(--color-panel-text-dim);
-}
-
-.btn {
-  background: var(--color-panel-bg);
-  color: var(--color-panel-text);
-  border: none;
-  padding: var(--btn-padding);
-  font: 700 var(--btn-font-size) var(--font-mono);
-  letter-spacing: var(--btn-letter-spacing);
-  text-transform: uppercase;
-  cursor: none;
-}
-.btn:hover {
-  background: var(--color-panel-bg-hover);
-}
-
-.ctrl {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  gap: var(--label-gap);
-}
-.ctrl label {
-  font: 700 var(--label-font-size) var(--font-mono);
-  letter-spacing: var(--label-letter-spacing);
-  color: var(--color-ink-dim);
-  text-transform: uppercase;
-  user-select: none;
-}
-input[type="range"] {
-  -webkit-appearance: none;
-  width: var(--range-width);
-  height: var(--range-track-h);
-  background: var(--color-ink-faint);
-  outline: none;
-  cursor: none;
-  border-radius: 0;
-}
-input[type="range"]::-webkit-slider-thumb {
-  -webkit-appearance: none;
-  width: var(--range-thumb-size);
-  height: var(--range-thumb-size);
-  background: var(--color-ink);
-  border-radius: 0;
-  cursor: none;
 }
 
 #tag {
