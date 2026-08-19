@@ -25,7 +25,7 @@ import {
   };
 
   const FONT_SCALE = {
-    FULL_WIDTH: 34 // Reduced by 10% for smaller text
+    FULL_WIDTH: 28 // Significantly reduced for smaller text
   };
 
   const INPUT = {
