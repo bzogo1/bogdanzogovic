@@ -825,6 +825,11 @@ body.light .header {
   display: block;
 }
 
+.h1 .hero-subtitle {
+  font-size: clamp(2rem, 3vw, 2.75rem);
+  line-height: 1.1;
+}
+
 .header-text {
   font-size: var(--text-large);
   font-weight: 400;
