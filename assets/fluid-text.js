@@ -25,11 +25,11 @@ import {
   };
 
   const FONT_SCALE = {
-    FULL_WIDTH: 32 // Smaller to prevent cutoff
+    FULL_WIDTH: 38 // Increased slightly for two-line text
   };
 
   const INPUT = {
-    DEFAULT_TEXT: "Hi, i'm Bogdan Zogovic",
+    DEFAULT_TEXT: "Hi, i'm Bogdan\nZogovic",
     REBUILD_DEBOUNCE_MS: 60
   };
 
@@ -120,6 +120,7 @@ import {
       maskCtx.fillRect(0, 0, W, H);
 
       const str = (text || "").toUpperCase() || INPUT.DEFAULT_TEXT;
+      const lines = str.split('\n');
 
       // ── Step 1: measure true ink bounds ──
       const probeCanvas = document.createElement("canvas");
@@ -132,7 +133,12 @@ import {
       pc.font = `900 ${MASK.PROBE_FONT_SIZE}px Unbounded, "Arial Black", sans-serif`;
       pc.textAlign = "left";
       pc.textBaseline = "middle";
-      pc.fillText(str, MASK.PROBE_CANVAS_W / 2, MASK.PROBE_CANVAS_H / 2);
+
+      // Draw both lines for measurement
+      const lineHeight = MASK.PROBE_FONT_SIZE * 1.2;
+      lines.forEach((line, index) => {
+        pc.fillText(line, MASK.PROBE_CANVAS_W / 2, MASK.PROBE_CANVAS_H / 2 + (index - (lines.length - 1) / 2) * lineHeight);
+      });
 
       const pd = pc.getImageData(0, 0, MASK.PROBE_CANVAS_W, MASK.PROBE_CANVAS_H).data;
       let minX = MASK.PROBE_CANVAS_W, maxX = 0;
@@ -155,10 +161,10 @@ import {
       // ── Step 2: compute final font size ───────────────────
       const fullWidthFontSize = MASK.PROBE_FONT_SIZE * (W / inkW);
       const userScaleFraction = FONT_SCALE.FULL_WIDTH / 100; // Convert to fraction
-      const mobileScale = window.innerWidth < 768 ? 0.6 : 1; // Reduce font size on mobile
+      const mobileScale = window.innerWidth < 768 ? 0.6 : 1; // Reduce font size on mobile for two lines
       const finalFontSize = Math.min(
         fullWidthFontSize * userScaleFraction * mobileScale,
-        H * MASK.MAX_HEIGHT_FRACTION
+        H * MASK.MAX_HEIGHT_FRACTION / lines.length // Account for multiple lines
       );
 
       // ── Step 3: draw at final size ───────────────────
@@ -173,7 +179,12 @@ import {
         (probeInkCentreY - probeCanvaCentreY) * (finalFontSize / MASK.PROBE_FONT_SIZE);
       const verticalOffset = H * 0.15; // Move text down by 15% of container height
       const horizontalPadding = W * 0.03; // Move text more left (less padding)
-      maskCtx.fillText(str, horizontalPadding, H / 2 - inkCentreOffset + verticalOffset);
+
+      // Draw both lines
+      const finalLineHeight = finalFontSize * 1.2;
+      lines.forEach((line, index) => {
+        maskCtx.fillText(line, horizontalPadding, H / 2 - inkCentreOffset + verticalOffset + (index - (lines.length - 1) / 2) * finalLineHeight);
+      });
 
       if (maskTex) {
         maskTex.image = maskCanvas;
