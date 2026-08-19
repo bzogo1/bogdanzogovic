@@ -33,6 +33,13 @@ import {
     REBUILD_DEBOUNCE_MS: 60
   };
 
+  const MOUSE_SWELL = {
+    DIST_FALLOFF: 2.5,
+    FREQUENCY: 9.0,
+    SPEED_MUL: 5.0,
+    AMPLITUDE: 1.2
+  };
+
   const CONTOUR = {
     LINE_WIDTH: 0.22,
     AA_BASE: 0.015,
@@ -187,6 +194,7 @@ import {
           container.clientHeight * renderer.getPixelRatio()
         )
       },
+      uMouse: { value: new Vector2(0.5, 0.5) },
       uDensity: { value: 9.0 },
       uSpeed: { value: 0.28 },
       uTurb: { value: 0.45 },
@@ -199,6 +207,7 @@ import {
  
       uniform float     uTime;
       uniform vec2      uRes;
+      uniform vec2      uMouse;
       uniform float     uDensity;
       uniform float     uSpeed;
       uniform float     uTurb;
@@ -208,6 +217,11 @@ import {
  
       const float MASK_EDGE_LO = ${glslFloat(MASK_BLEND.EDGE_LO)};
       const float MASK_EDGE_HI = ${glslFloat(MASK_BLEND.EDGE_HI)};
+ 
+      const float SWELL_DIST_FALLOFF = ${glslFloat(MOUSE_SWELL.DIST_FALLOFF)};
+      const float SWELL_FREQUENCY    = ${glslFloat(MOUSE_SWELL.FREQUENCY)};
+      const float SWELL_SPEED_MUL    = ${glslFloat(MOUSE_SWELL.SPEED_MUL)};
+      const float SWELL_AMPLITUDE    = ${glslFloat(MOUSE_SWELL.AMPLITUDE)};
  
       const float CONTOUR_LINE_WIDTH   = ${glslFloat(CONTOUR.LINE_WIDTH)};
       const float CONTOUR_AA_BASE      = ${glslFloat(CONTOUR.AA_BASE)};
@@ -238,6 +252,13 @@ ${BASE_WAVES.map(baseWaveGLSL).join("\n")}
         if (uTurb > 0.0) {
 ${TURB_WAVES.map(turbWaveGLSL).join("\n")}
         }
+ 
+        // ── mouse proximity swell ────────────────────────
+        vec2  swellDelta = (uv - uMouse) * vec2(ar, 1.0);
+        float swellDist  = length(swellDelta);
+        h += SWELL_AMPLITUDE
+           * exp(-swellDist * SWELL_DIST_FALLOFF)
+           * sin(swellDist * SWELL_FREQUENCY - t * SWELL_SPEED_MUL);
  
         float bands     = tri(h * uDensity * CONTOUR_WAVE_SCALE);
         float aaRadius  = CONTOUR_AA_BASE + CONTOUR_AA_DENSITY * uDensity;
@@ -270,6 +291,18 @@ ${TURB_WAVES.map(turbWaveGLSL).join("\n")}
     window.addEventListener('resize', () => {
       buildMask(INPUT.DEFAULT_TEXT);
       uniforms.uMask.value = maskTex;
+    });
+
+    // ── mouse tracking ───────────────────────────────────
+    container.addEventListener("mousemove", (e) => {
+      const rect = container.getBoundingClientRect();
+      const x = e.clientX - rect.left;
+      const y = e.clientY - rect.top;
+      
+      uniforms.uMouse.value.set(
+        x / container.clientWidth,
+        1 - y / container.clientHeight
+      );
     });
 
     // ── render loop ───────────────────────────────────────
