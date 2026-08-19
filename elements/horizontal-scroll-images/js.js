@@ -43,5 +43,39 @@ document.addEventListener("DOMContentLoaded", () => {
 
   viewport.addEventListener("scroll", updateCoverflow, { passive: true });
   window.addEventListener("resize", updateCoverflow, { passive: true });
+
+  let isDragging = false;
+  let dragStartX = 0;
+  let dragStartScrollLeft = 0;
+
+  viewport.addEventListener("pointerdown", (event) => {
+    if (event.pointerType === "mouse" && event.button !== 0) return;
+
+    isDragging = true;
+    dragStartX = event.clientX;
+    dragStartScrollLeft = viewport.scrollLeft;
+    viewport.classList.add("is-dragging");
+    viewport.setPointerCapture(event.pointerId);
+  });
+
+  viewport.addEventListener("pointermove", (event) => {
+    if (!isDragging) return;
+
+    event.preventDefault();
+    viewport.scrollLeft = dragStartScrollLeft - (event.clientX - dragStartX);
+  });
+
+  const stopDragging = (event) => {
+    if (!isDragging) return;
+
+    isDragging = false;
+    viewport.classList.remove("is-dragging");
+    if (viewport.hasPointerCapture(event.pointerId)) {
+      viewport.releasePointerCapture(event.pointerId);
+    }
+  };
+
+  viewport.addEventListener("pointerup", stopDragging);
+  viewport.addEventListener("pointercancel", stopDragging);
   updateCoverflow();
 });
