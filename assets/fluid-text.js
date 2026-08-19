@@ -25,7 +25,7 @@ import {
   };
 
   const FONT_SCALE = {
-    FULL_WIDTH: 60 // Adjusted for better fit with longer text
+    FULL_WIDTH: 45 // Reduced to prevent text cutoff
   };
 
   const INPUT = {
@@ -47,7 +47,7 @@ import {
 
   const PALETTE = {
     BG: [0.0, 0.0, 0.0], // Not used with transparent background
-    FILL: [0.8, 1.0, 0.0] // Chartreuse to match original design
+    FILL: [0.2, 0.6, 1.0] // Blue color
   };
 
   const BASE_WAVES = [
