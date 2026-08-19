@@ -1280,6 +1280,21 @@ body.dark .work-links img {
 /* ----- Contact -----*/
 /* --------------------------------- */
 
+.coffee-jar {
+  display: flex;
+  justify-content: center;
+  block-size: 155px;
+  margin-block-end: var(--gutter-small);
+  overflow: hidden;
+}
+
+.coffee-jar svg {
+  display: block;
+  inline-size: min(220px, 55vw);
+  block-size: 220px;
+  margin-block-start: -2px;
+}
+
 .contact-content {
   display: grid;
   grid-template-columns: minmax(245px, 35%) 1fr;
