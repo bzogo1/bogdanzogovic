@@ -1280,19 +1280,6 @@ body.dark .work-links img {
 /* ----- Contact -----*/
 /* --------------------------------- */
 
-.coffee-jar {
-  display: flex;
-  justify-content: center;
-  inline-size: min(220px, 55vw);
-  block-size: 220px;
-  margin: -145px auto var(--gutter-small);
-}
-
-.coffee-jar {
-  display: block;
-  border: 0;
-}
-
 .contact-content {
   display: grid;
   grid-template-columns: minmax(245px, 35%) 1fr;
@@ -1377,7 +1364,6 @@ body.light .signatures {
 
 .contact-form {
   background-color: var(--bg-color-secondary);
-  padding-block-start: 155px;
   border-top-right-radius: var(--gutter-nano);
   border-bottom-right-radius: var(--gutter-nano);
 }
