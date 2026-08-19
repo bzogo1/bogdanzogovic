@@ -25,7 +25,7 @@ import {
   };
 
   const FONT_SCALE = {
-    FULL_WIDTH: 45 // Reduced to prevent text cutoff
+    FULL_WIDTH: 35 // Further reduced to prevent edge cutoff
   };
 
   const INPUT = {
@@ -171,7 +171,8 @@ import {
       const probeCanvaCentreY = MASK.PROBE_CANVAS_H / 2;
       const inkCentreOffset =
         (probeInkCentreY - probeCanvaCentreY) * (finalFontSize / MASK.PROBE_FONT_SIZE);
-      maskCtx.fillText(str, W / 2, H / 2 - inkCentreOffset);
+      const verticalOffset = H * 0.15; // Move text down by 15% of container height
+      maskCtx.fillText(str, W / 2, H / 2 - inkCentreOffset + verticalOffset);
 
       if (maskTex) {
         maskTex.image = maskCanvas;
