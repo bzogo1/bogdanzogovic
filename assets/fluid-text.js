@@ -7,7 +7,6 @@ import {
   ShaderMaterial,
   CanvasTexture,
   Vector2,
-  Vector4,
   LinearFilter
 } from "https://cdnjs.cloudflare.com/ajax/libs/three.js/0.180.0/three.module.min.js";
 
@@ -26,30 +25,12 @@ import {
   };
 
   const FONT_SCALE = {
-    SLIDER_MIN: 10,
-    SLIDER_MAX: 100,
-    FULL_WIDTH: 80 // Adjusted to prevent text from being too large
+    FULL_WIDTH: 60 // Adjusted for better fit with longer text
   };
 
   const INPUT = {
-    DEFAULT_TEXT: "HI, I'M BOGDAN ZOGOVIC",
+    DEFAULT_TEXT: "Hi, i'm Bogdan Zogovic",
     REBUILD_DEBOUNCE_MS: 60
-  };
-
-  const RIPPLE = {
-    SLOT_COUNT: 4,
-    DECAY_RATE: 1.1,
-    RING_FREQUENCY: 7.0,
-    RING_SPEED_MUL: 9.0,
-    DIST_FALLOFF: 2.2,
-    AMPLITUDE: 1.8
-  };
-
-  const MOUSE_SWELL = {
-    DIST_FALLOFF: 2.5,
-    FREQUENCY: 9.0,
-    SPEED_MUL: 5.0,
-    AMPLITUDE: 1.2
   };
 
   const CONTOUR = {
@@ -65,8 +46,8 @@ import {
   };
 
   const PALETTE = {
-    BG: [0.8, 1.0, 0.0],
-    FILL: [0.765, 0.518, 1.0]
+    BG: [0.0, 0.0, 0.0], // Not used with transparent background
+    FILL: [0.8, 1.0, 0.0] // Chartreuse to match original design
   };
 
   const BASE_WAVES = [
@@ -108,7 +89,7 @@ import {
     if (!container) return;
 
     // ── renderer ──────────────────────────────────────────
-    const renderer = new WebGLRenderer({ antialias: true, alpha: true });
+    const renderer = new WebGLRenderer({ antialias: true, alpha: true, premultipliedAlpha: false });
     renderer.setPixelRatio(Math.min(devicePixelRatio, RENDERER.MAX_PIXEL_RATIO));
     renderer.setSize(container.clientWidth, container.clientHeight);
     renderer.domElement.id = "three";
@@ -166,8 +147,8 @@ import {
 
       // ── Step 2: compute final font size ───────────────────
       const fullWidthFontSize = MASK.PROBE_FONT_SIZE * (W / inkW);
-      const userScaleFraction = +document.getElementById("sl-f").value / FONT_SCALE.FULL_WIDTH;
-      const mobileScale = window.innerWidth < 768 ? 0.7 : 1; // Reduce font size on mobile
+      const userScaleFraction = FONT_SCALE.FULL_WIDTH / 100; // Convert to fraction
+      const mobileScale = window.innerWidth < 768 ? 0.6 : 1; // Reduce font size on mobile
       const finalFontSize = Math.min(
         fullWidthFontSize * userScaleFraction * mobileScale,
         H * MASK.MAX_HEIGHT_FRACTION
@@ -206,15 +187,10 @@ import {
           container.clientHeight * renderer.getPixelRatio()
         )
       },
-      uMouse: { value: new Vector2(0.5, 0.5) },
       uDensity: { value: 9.0 },
       uSpeed: { value: 0.28 },
       uTurb: { value: 0.45 },
-      uMask: { value: maskTex },
-      uR0: { value: new Vector4(0, 0, -1, 0) },
-      uR1: { value: new Vector4(0, 0, -1, 0) },
-      uR2: { value: new Vector4(0, 0, -1, 0) },
-      uR3: { value: new Vector4(0, 0, -1, 0) }
+      uMask: { value: maskTex }
     };
 
     // ── fragment shader ───────────────────────────────────
@@ -223,29 +199,15 @@ import {
  
       uniform float     uTime;
       uniform vec2      uRes;
-      uniform vec2      uMouse;
       uniform float     uDensity;
       uniform float     uSpeed;
       uniform float     uTurb;
       uniform sampler2D uMask;
-      uniform vec4      uR0, uR1, uR2, uR3;
  
-      const vec3 COLOR_BG   = vec3(${PALETTE.BG.map((v) => v.toFixed(3)).join(", ")});
       const vec3 COLOR_FILL = vec3(${PALETTE.FILL.map((v) => v.toFixed(3)).join(", ")});
  
       const float MASK_EDGE_LO = ${glslFloat(MASK_BLEND.EDGE_LO)};
       const float MASK_EDGE_HI = ${glslFloat(MASK_BLEND.EDGE_HI)};
- 
-      const float RIPPLE_DECAY_RATE   = ${glslFloat(RIPPLE.DECAY_RATE)};
-      const float RIPPLE_RING_FREQ    = ${glslFloat(RIPPLE.RING_FREQUENCY)};
-      const float RIPPLE_RING_SPEED   = ${glslFloat(RIPPLE.RING_SPEED_MUL)};
-      const float RIPPLE_DIST_FALLOFF = ${glslFloat(RIPPLE.DIST_FALLOFF)};
-      const float RIPPLE_AMPLITUDE    = ${glslFloat(RIPPLE.AMPLITUDE)};
- 
-      const float SWELL_DIST_FALLOFF = ${glslFloat(MOUSE_SWELL.DIST_FALLOFF)};
-      const float SWELL_FREQUENCY    = ${glslFloat(MOUSE_SWELL.FREQUENCY)};
-      const float SWELL_SPEED_MUL    = ${glslFloat(MOUSE_SWELL.SPEED_MUL)};
-      const float SWELL_AMPLITUDE    = ${glslFloat(MOUSE_SWELL.AMPLITUDE)};
  
       const float CONTOUR_LINE_WIDTH   = ${glslFloat(CONTOUR.LINE_WIDTH)};
       const float CONTOUR_AA_BASE      = ${glslFloat(CONTOUR.AA_BASE)};
@@ -254,17 +216,6 @@ import {
  
       float tri(float x) {
         return abs(fract(x + 0.5) - 0.5) * 2.0;
-      }
- 
-      float ripple(vec4 r, vec2 uv, float t) {
-        if (r.z < 0.0) return 0.0;
-        float age       = t - r.z;
-        float decay     = exp(-age * RIPPLE_DECAY_RATE);
-        float ar        = uRes.x / uRes.y;
-        vec2  delta     = (uv - r.xy) * vec2(ar, 1.0);
-        float dist      = length(delta);
-        float ringPhase = dist * RIPPLE_RING_FREQ - age * uSpeed * RIPPLE_RING_SPEED;
-        return decay * sin(ringPhase) * exp(-dist * RIPPLE_DIST_FALLOFF) * RIPPLE_AMPLITUDE;
       }
  
       void main() {
@@ -277,7 +228,7 @@ import {
         float mask       = smoothstep(MASK_EDGE_LO, MASK_EDGE_HI, insideMask);
  
         if (mask < 0.001) {
-          gl_FragColor = vec4(COLOR_BG, 1.0);
+          gl_FragColor = vec4(0.0, 0.0, 0.0, 0.0); // Transparent background
           return;
         }
  
@@ -288,24 +239,13 @@ ${BASE_WAVES.map(baseWaveGLSL).join("\n")}
 ${TURB_WAVES.map(turbWaveGLSL).join("\n")}
         }
  
-        vec2  swellDelta = (uv - uMouse) * vec2(ar, 1.0);
-        float swellDist  = length(swellDelta);
-        h += SWELL_AMPLITUDE
-           * exp(-swellDist * SWELL_DIST_FALLOFF)
-           * sin(swellDist * SWELL_FREQUENCY - t * SWELL_SPEED_MUL);
- 
-        h += ripple(uR0, uv, uTime);
-        h += ripple(uR1, uv, uTime);
-        h += ripple(uR2, uv, uTime);
-        h += ripple(uR3, uv, uTime);
- 
         float bands     = tri(h * uDensity * CONTOUR_WAVE_SCALE);
         float aaRadius  = CONTOUR_AA_BASE + CONTOUR_AA_DENSITY * uDensity;
         float isOnLine  = 1.0 - smoothstep(CONTOUR_LINE_WIDTH - aaRadius,
                                            CONTOUR_LINE_WIDTH + aaRadius, bands);
-        vec3  fluidColor = mix(COLOR_FILL, COLOR_BG, isOnLine);
+        vec3  fluidColor = mix(COLOR_FILL, vec3(0.0), isOnLine);
  
-        gl_FragColor = vec4(mix(COLOR_BG, fluidColor, mask), 1.0);
+        gl_FragColor = vec4(fluidColor, mask);
       }
     `;
 
@@ -321,92 +261,15 @@ ${TURB_WAVES.map(turbWaveGLSL).join("\n")}
       renderer.setSize(container.clientWidth, container.clientHeight);
       const pr = renderer.getPixelRatio();
       uniforms.uRes.value.set(container.clientWidth * pr, container.clientHeight * pr);
-      buildMask(document.getElementById("text-field").value || INPUT.DEFAULT_TEXT);
+      buildMask(INPUT.DEFAULT_TEXT);
       uniforms.uMask.value = maskTex;
     });
     resizeObserver.observe(container);
 
     // Also handle window resize for mobile detection
     window.addEventListener('resize', () => {
-      buildMask(document.getElementById("text-field").value || INPUT.DEFAULT_TEXT);
+      buildMask(INPUT.DEFAULT_TEXT);
       uniforms.uMask.value = maskTex;
-    });
-
-    // ── text input ────────────────────────────────────────
-    const textField = document.getElementById("text-field");
-    let rebuildTimer = null;
-
-    textField.addEventListener("input", () => {
-      clearTimeout(rebuildTimer);
-      rebuildTimer = setTimeout(() => {
-        buildMask(textField.value);
-        uniforms.uMask.value = maskTex;
-      }, INPUT.REBUILD_DEBOUNCE_MS);
-    });
-
-    // ── mouse tracking + custom cursor ───────────────────
-    const cursorEl = document.getElementById("cursor");
-
-    container.addEventListener("mousemove", (e) => {
-      const rect = container.getBoundingClientRect();
-      const x = e.clientX - rect.left;
-      const y = e.clientY - rect.top;
-      
-      cursorEl.style.left = x + "px";
-      cursorEl.style.top = y + "px";
-      cursorEl.style.transform = 'translate(-50%, -50%)';
-      uniforms.uMouse.value.set(
-        x / container.clientWidth,
-        1 - y / container.clientHeight
-      );
-    });
-    
-    container.addEventListener("mousedown", () => cursorEl.classList.add("big"));
-    container.addEventListener("mouseup", () => cursorEl.classList.remove("big"));
-
-    // ── click ripples ─────────────────────────────────────
-    const rippleSlots = [
-      uniforms.uR0,
-      uniforms.uR1,
-      uniforms.uR2,
-      uniforms.uR3
-    ];
-    let rippleIndex = 0;
-
-    container.addEventListener("click", (e) => {
-      if (e.target.closest("#type-input")) return;
-      const rect = container.getBoundingClientRect();
-      const x = e.clientX - rect.left;
-      const y = e.clientY - rect.top;
-      
-      rippleSlots[rippleIndex % RIPPLE.SLOT_COUNT].value.set(
-        x / container.clientWidth,
-        1 - y / container.clientHeight,
-        uniforms.uTime.value,
-        1
-      );
-      rippleIndex++;
-    });
-
-    // ── slider controls ───────────────────────────────────
-    document.getElementById("sl-d").addEventListener("input", (e) => {
-      uniforms.uDensity.value = +e.target.value;
-    });
-    document.getElementById("sl-s").addEventListener("input", (e) => {
-      uniforms.uSpeed.value = +e.target.value / 100;
-    });
-    document.getElementById("sl-t").addEventListener("input", (e) => {
-      uniforms.uTurb.value = +e.target.value / 100;
-    });
-    document.getElementById("sl-f").addEventListener("input", () => {
-      buildMask(textField.value);
-      uniforms.uMask.value = maskTex;
-    });
-
-    let paused = false;
-    document.getElementById("btn-p").addEventListener("click", function () {
-      paused = !paused;
-      this.textContent = paused ? "▶" : "⏸";
     });
 
     // ── render loop ───────────────────────────────────────
@@ -417,7 +280,7 @@ ${TURB_WAVES.map(turbWaveGLSL).join("\n")}
       requestAnimationFrame(loop);
       const dt = lastTimestamp === null ? 0 : Math.min((timestamp - lastTimestamp) / 1000, 0.05);
       lastTimestamp = timestamp;
-      if (!paused) elapsed += dt;
+      elapsed += dt;
       uniforms.uTime.value = elapsed;
       renderer.render(scene, camera);
     })(0);

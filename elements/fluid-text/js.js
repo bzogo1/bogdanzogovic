@@ -35,24 +35,8 @@ import {
   };
 
   const INPUT = {
-    DEFAULT_TEXT: "FLUID",
+    DEFAULT_TEXT: "Hi, i'm Bogdan Zogovic",
     REBUILD_DEBOUNCE_MS: 60 // wait this long after last keypress before re-rasterising
-  };
-
-  const RIPPLE = {
-    SLOT_COUNT: 4, // number of simultaneous ripple origins
-    DECAY_RATE: 1.1, // exponential decay per second
-    RING_FREQUENCY: 7.0, // spatial frequency of the concentric rings  — must be float
-    RING_SPEED_MUL: 9.0, // multiplied by uSpeed to get ring propagation rate — must be float
-    DIST_FALLOFF: 2.2, // how fast rings fade with distance
-    AMPLITUDE: 0.0 // disabled - click ripples removed
-  };
-
-  const MOUSE_SWELL = {
-    DIST_FALLOFF: 2.5, // Gaussian-ish falloff around cursor
-    FREQUENCY: 9.0, // spatial ring frequency — must be float
-    SPEED_MUL: 5.0, // multiplied by uSpeed — must be float
-    AMPLITUDE: 1.2
   };
 
   const CONTOUR = {
@@ -253,7 +237,6 @@ import {
           innerHeight * renderer.getPixelRatio()
         )
       },
-      uMouse: { value: new Vector2(0.5, 0.5) },
       uDensity: { value: 9.0 },
       uSpeed: { value: 0.28 },
       uTurb: { value: 0.45 },
@@ -269,7 +252,6 @@ import {
  
       uniform float     uTime;
       uniform vec2      uRes;
-      uniform vec2      uMouse;
       uniform float     uDensity;
       uniform float     uSpeed;
       uniform float     uTurb;
@@ -286,19 +268,6 @@ import {
       // ── mask clip ──────────────────────────────────────
       const float MASK_EDGE_LO = ${glslFloat(MASK_BLEND.EDGE_LO)};
       const float MASK_EDGE_HI = ${glslFloat(MASK_BLEND.EDGE_HI)};
- 
-      // ── ripple physics ─────────────────────────────────
-      const float RIPPLE_DECAY_RATE   = ${glslFloat(RIPPLE.DECAY_RATE)};
-      const float RIPPLE_RING_FREQ    = ${glslFloat(RIPPLE.RING_FREQUENCY)};
-      const float RIPPLE_RING_SPEED   = ${glslFloat(RIPPLE.RING_SPEED_MUL)};
-      const float RIPPLE_DIST_FALLOFF = ${glslFloat(RIPPLE.DIST_FALLOFF)};
-      const float RIPPLE_AMPLITUDE    = 0.0; // disabled
- 
-      // ── mouse swell ────────────────────────────────────
-      const float SWELL_DIST_FALLOFF = ${glslFloat(MOUSE_SWELL.DIST_FALLOFF)};
-      const float SWELL_FREQUENCY    = ${glslFloat(MOUSE_SWELL.FREQUENCY)};
-      const float SWELL_SPEED_MUL    = ${glslFloat(MOUSE_SWELL.SPEED_MUL)};
-      const float SWELL_AMPLITUDE    = ${glslFloat(MOUSE_SWELL.AMPLITUDE)};
  
       // ── contour lines ──────────────────────────────────
       const float CONTOUR_LINE_WIDTH   = ${glslFloat(CONTOUR.LINE_WIDTH)};
@@ -343,13 +312,6 @@ ${BASE_WAVES.map(baseWaveGLSL).join("\n")}
 ${TURB_WAVES.map(turbWaveGLSL).join("\n")}
         }
  
-        // ── mouse proximity swell ────────────────────────
-        vec2  swellDelta = (uv - uMouse) * vec2(ar, 1.0);
-        float swellDist  = length(swellDelta);
-        h += SWELL_AMPLITUDE
-           * exp(-swellDist * SWELL_DIST_FALLOFF)
-           * sin(swellDist * SWELL_FREQUENCY - t * SWELL_SPEED_MUL);
- 
         // ── contour rendering ────────────────────────────
         float bands     = tri(h * uDensity * CONTOUR_WAVE_SCALE);
         float aaRadius  = CONTOUR_AA_BASE + CONTOUR_AA_DENSITY * uDensity;
@@ -374,35 +336,9 @@ ${TURB_WAVES.map(turbWaveGLSL).join("\n")}
       renderer.setSize(innerWidth, innerHeight);
       const pr = renderer.getPixelRatio();
       uniforms.uRes.value.set(innerWidth * pr, innerHeight * pr);
-      buildMask(
-        document.getElementById("text-field").value || INPUT.DEFAULT_TEXT
-      );
+      buildMask(INPUT.DEFAULT_TEXT);
       uniforms.uMask.value = maskTex;
     });
-
-    // ── text input ────────────────────────────────────────
-    const textField = document.getElementById("text-field");
-    let rebuildTimer = null;
-
-    textField.addEventListener("input", () => {
-      clearTimeout(rebuildTimer);
-      rebuildTimer = setTimeout(() => {
-        buildMask(textField.value);
-        uniforms.uMask.value = maskTex;
-      }, INPUT.REBUILD_DEBOUNCE_MS);
-    });
-
-    // ── mouse tracking ───────────────────────────────────
-    window.addEventListener("mousemove", (e) => {
-      uniforms.uMouse.value.set(
-        e.clientX / innerWidth,
-        1 - e.clientY / innerHeight
-      );
-    });
-
-    // ── click ripples removed ────────────────────────────
-
-    // ── slider controls removed ──────────────────────────
 
     // ── render loop ───────────────────────────────────────
     let lastTimestamp = null;
