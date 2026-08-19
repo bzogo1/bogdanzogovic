@@ -835,7 +835,7 @@ body.light .header {
   font-weight: 400;
   max-inline-size: 745px;
   margin-block-start: var(--gutter-micro);
-  margin-block-end: var(--gutter-medium);
+  margin-block-end: var(--gutter-small);
 }
 
 @media (max-width: 1200px) {
