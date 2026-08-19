@@ -358,9 +358,9 @@ h3,
   z-index: -1;
   left: -0.08em;
   right: -0.08em;
-  bottom: 0.05em;
-  height: 0.42em;
-  background: #a8de97;
+  bottom: -0.05em;
+  height: 0.28em;
+  background: #63b3ff;
   clip-path: polygon(0 35%, 7% 13%, 18% 28%, 31% 4%, 45% 22%, 59% 0, 73% 20%, 86% 7%, 100% 25%, 96% 80%, 79% 68%, 64% 94%, 48% 73%, 32% 100%, 17% 74%, 3% 88%);
   transform: scaleX(0);
   transform-origin: left center;
