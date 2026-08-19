@@ -342,6 +342,42 @@ h3,
   text-align: center;
 }
 
+.scroll-highlight {
+  isolation: isolate;
+}
+
+.scroll-highlight > span {
+  position: relative;
+  z-index: 0;
+  display: inline-block;
+}
+
+.scroll-highlight > span::after {
+  content: "";
+  position: absolute;
+  z-index: -1;
+  left: -0.08em;
+  right: -0.08em;
+  bottom: 0.05em;
+  height: 0.42em;
+  background: #a8de97;
+  clip-path: polygon(0 35%, 7% 13%, 18% 28%, 31% 4%, 45% 22%, 59% 0, 73% 20%, 86% 7%, 100% 25%, 96% 80%, 79% 68%, 64% 94%, 48% 73%, 32% 100%, 17% 74%, 3% 88%);
+  transform: scaleX(0);
+  transform-origin: left center;
+  transition: transform 0.65s var(--easing);
+}
+
+.scroll-highlight.is-highlighted > span::after {
+  transform: scaleX(1);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .scroll-highlight > span::after {
+    transform: scaleX(1);
+    transition: none;
+  }
+}
+
 .h3 {
   font-size: var(--h3);
 }

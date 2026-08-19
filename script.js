@@ -338,6 +338,26 @@ workEls.forEach((workEl) => {
   observer.observe(workEl);
 });
 
+const highlightedTitles = document.querySelectorAll(".scroll-highlight");
+
+if (highlightedTitles.length) {
+  const highlightObserver = new IntersectionObserver(
+    (entries, currentObserver) => {
+      entries.forEach((entry) => {
+        if (!entry.isIntersecting) {
+          return;
+        }
+
+        entry.target.classList.add("is-highlighted");
+        currentObserver.unobserve(entry.target);
+      });
+    },
+    { threshold: 0.6 }
+  );
+
+  highlightedTitles.forEach((title) => highlightObserver.observe(title));
+}
+
 // Toggle theme and store user preferred theme for future
 
 const switchThemeEl = document.querySelector('input[type="checkbox"]');
