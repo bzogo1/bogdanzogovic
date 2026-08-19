@@ -55,8 +55,12 @@
       crossorigin
     />
 
+    <link href="https://fonts.googleapis.com/css2?family=Unbounded:wght@900&family=JetBrains+Mono:wght@700&display=swap" rel="stylesheet">
+
     <link rel="stylesheet" href="style.css"  />
+    <link rel="stylesheet" href="assets/fluid-text.css"  />
     <script src="script.js" defer></script>
+    <script type="module" src="assets/fluid-text.js" defer></script>
     <script>
       window.si = window.si || function () { (window.siq = window.siq || []).push(arguments); };
     </script>
@@ -113,7 +117,18 @@
         <div class="header-textbox">
           <!-- Replace with your name and job title -->
           <h1 class="h1">
-            <span>Hi, I'm Bogdan Zogovic</span>
+            <div class="fluid-text-container">
+              <div id="cursor"></div>
+              <div id="grain"></div>
+              <div id="type-input">
+                <div class="ctrl"><label>DENSITY</label><input type="range" id="sl-d" min="2" max="18" value="9" step="0.1"></div>
+                <div class="ctrl"><label>SPEED</label> <input type="range" id="sl-s" min="0" max="100" value="28"></div>
+                <div class="ctrl"><label>TURB</label> <input type="range" id="sl-t" min="0" max="100" value="45"></div>
+                <div class="ctrl"><label>FONT SIZE</label><input type="range" id="sl-f" min="10" max="100" value="80"></div>
+                <input id="text-field" type="text" value="HI, I'M BOGDAN ZOGOVIC" placeholder="TYPE…" spellcheck="false" autocomplete="off">
+                <button class="btn" id="btn-p">⏸</button>
+              </div>
+            </div>
             <span class="hero-subtitle">Full-Stack Developer</span>
           </h1>
 
