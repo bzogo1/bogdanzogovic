@@ -25,7 +25,7 @@ import {
   };
 
   const FONT_SCALE = {
-    FULL_WIDTH: 35 // Further reduced to prevent edge cutoff
+    FULL_WIDTH: 40 // Slightly increased for better size while preventing cutoff
   };
 
   const INPUT = {
@@ -34,10 +34,10 @@ import {
   };
 
   const MOUSE_SWELL = {
-    DIST_FALLOFF: 2.5,
-    FREQUENCY: 9.0,
-    SPEED_MUL: 5.0,
-    AMPLITUDE: 1.2
+    DIST_FALLOFF: 3.0, // Increased falloff for less spread
+    FREQUENCY: 6.0, // Reduced frequency for slower movement
+    SPEED_MUL: 3.0, // Reduced speed multiplier for slower animation
+    AMPLITUDE: 0.6 // Reduced amplitude for less intense effect
   };
 
   const CONTOUR = {
@@ -130,7 +130,7 @@ import {
       pc.fillRect(0, 0, MASK.PROBE_CANVAS_W, MASK.PROBE_CANVAS_H);
       pc.fillStyle = "#fff";
       pc.font = `900 ${MASK.PROBE_FONT_SIZE}px Unbounded, "Arial Black", sans-serif`;
-      pc.textAlign = "center";
+      pc.textAlign = "left";
       pc.textBaseline = "middle";
       pc.fillText(str, MASK.PROBE_CANVAS_W / 2, MASK.PROBE_CANVAS_H / 2);
 
@@ -164,7 +164,7 @@ import {
       // ── Step 3: draw at final size ───────────────────
       maskCtx.fillStyle = "#fff";
       maskCtx.font = `900 ${finalFontSize}px Unbounded, "Arial Black", sans-serif`;
-      maskCtx.textAlign = "center";
+      maskCtx.textAlign = "left";
       maskCtx.textBaseline = "middle";
 
       const probeInkCentreY = (minY + maxY) / 2;
@@ -172,7 +172,8 @@ import {
       const inkCentreOffset =
         (probeInkCentreY - probeCanvaCentreY) * (finalFontSize / MASK.PROBE_FONT_SIZE);
       const verticalOffset = H * 0.15; // Move text down by 15% of container height
-      maskCtx.fillText(str, W / 2, H / 2 - inkCentreOffset + verticalOffset);
+      const horizontalPadding = W * 0.08; // Add some padding from left edge
+      maskCtx.fillText(str, horizontalPadding, H / 2 - inkCentreOffset + verticalOffset);
 
       if (maskTex) {
         maskTex.image = maskCanvas;
