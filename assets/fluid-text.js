@@ -52,9 +52,14 @@ import {
     EDGE_HI: 0.62
   };
 
+  const BORDER = {
+    WIDTH: 0.03, // Width of the white border
+    COLOR: [1.0, 1.0, 1.0] // White color
+  };
+
   const PALETTE = {
     BG: [0.0, 0.0, 0.0], // Not used with transparent background
-    FILL: [0.2, 0.6, 1.0] // Blue color
+    FILL: [0.1, 0.4, 0.8] // Darker blue color
   };
 
   const BASE_WAVES = [
@@ -230,6 +235,9 @@ import {
  
       const float MASK_EDGE_LO = ${glslFloat(MASK_BLEND.EDGE_LO)};
       const float MASK_EDGE_HI = ${glslFloat(MASK_BLEND.EDGE_HI)};
+
+      const float BORDER_WIDTH = ${glslFloat(BORDER.WIDTH)};
+      const vec3 BORDER_COLOR = vec3(${BORDER.COLOR.map((v) => v.toFixed(3)).join(", ")});
  
       const float SWELL_DIST_FALLOFF = ${glslFloat(MOUSE_SWELL.DIST_FALLOFF)};
       const float SWELL_FREQUENCY    = ${glslFloat(MOUSE_SWELL.FREQUENCY)};
@@ -253,7 +261,12 @@ import {
  
         float insideMask = texture2D(uMask, uv).r;
         float mask       = smoothstep(MASK_EDGE_LO, MASK_EDGE_HI, insideMask);
- 
+
+        // Calculate edge for white border
+        float edge = smoothstep(MASK_EDGE_LO - BORDER_WIDTH, MASK_EDGE_LO, insideMask) -
+                     smoothstep(MASK_EDGE_HI, MASK_EDGE_HI + BORDER_WIDTH, insideMask);
+        float border = clamp(edge, 0.0, 1.0);
+
         if (mask < 0.001) {
           gl_FragColor = vec4(0.0, 0.0, 0.0, 0.0); // Transparent background
           return;
@@ -278,8 +291,11 @@ ${TURB_WAVES.map(turbWaveGLSL).join("\n")}
         float isOnLine  = 1.0 - smoothstep(CONTOUR_LINE_WIDTH - aaRadius,
                                            CONTOUR_LINE_WIDTH + aaRadius, bands);
         vec3  fluidColor = mix(COLOR_FILL, vec3(0.0), isOnLine);
- 
-        gl_FragColor = vec4(fluidColor, mask);
+
+        // Mix in white border
+        vec3 finalColor = mix(fluidColor, BORDER_COLOR, border);
+
+        gl_FragColor = vec4(finalColor, mask);
       }
     `;
 
