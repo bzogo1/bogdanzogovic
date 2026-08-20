@@ -722,12 +722,12 @@ main {
 }
 
 body.dark .header {
-  background-image: linear-gradient(#0000008b, #000000e6),
+  background-image: linear-gradient(#000000cc, #000000f0),
     url("assets/images/hero-bg.webp");
 }
 
 body.light .header {
-  background-image: linear-gradient(#ffffffa2, #ffffffe6),
+  background-image: linear-gradient(#ffffffcc, #fffffff0),
     url("assets/images/hero-bg-light.webp");
 }
 
@@ -859,6 +859,11 @@ body.light .header {
   max-inline-size: 745px;
   margin-block-start: var(--gutter-micro);
   margin-block-end: var(--gutter-small);
+  color: #ffffff;
+}
+
+body.light .header-text {
+  color: #333333;
 }
 
 @media (max-width: 1200px) {

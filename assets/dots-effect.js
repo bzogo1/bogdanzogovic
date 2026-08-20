@@ -1,6 +1,5 @@
 const c = document.querySelector('#dots-canvas');
 if (!c) {
-  console.log('Dots canvas not found');
 } else {
   const ctx = c.getContext('2d');
   const cw = 2000;
@@ -90,8 +89,6 @@ if (!c) {
       
       xTo(m.x2);
       yTo(m.y2);
-      
-      console.log('Mouse position:', m.x2, m.y2);
     }
   };
 
@@ -121,6 +118,4 @@ if (!c) {
   });
 
   observer.observe(document.body, { attributes: true });
-  
-  console.log('Dots effect initialized with mouse interaction on header');
 }
