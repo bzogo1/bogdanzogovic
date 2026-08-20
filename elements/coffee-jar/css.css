@@ -14,23 +14,23 @@
 }
 
 .coffee-jar {
-  width: 160px;
+  width: 300px;
   height: auto;
-  max-height: 130px;
+  max-height: 250px;
   display: block;
   margin-bottom: 0;
 }
 
 @media (max-width: 768px) {
   .coffee-jar {
-    width: 120px;
-    max-height: 100px;
+    width: 200px;
+    max-height: 170px;
   }
 }
 
 @media (max-width: 480px) {
   .coffee-jar {
-    width: 100px;
-    max-height: 85px;
+    width: 150px;
+    max-height: 130px;
   }
 }
