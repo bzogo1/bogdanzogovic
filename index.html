@@ -1067,6 +1067,12 @@
 
         <button type="submit" class="btn btn-cta">Send</button>
       </form>
+
+      <!-- Success notification box -->
+      <div id="success-notification" class="success-notification hidden">
+        <button class="notification-close" id="notification-close">&times;</button>
+        <p class="notification-message">Message Sent Successfully!</p>
+      </div>
     </div>
   </div>
 </section>
@@ -1077,6 +1083,7 @@
 
     const form = this;
     const button = form.querySelector("button[type='submit']");
+    const notification = document.getElementById("success-notification");
 
     const formData = new URLSearchParams();
 
@@ -1096,10 +1103,10 @@
       body: formData.toString()
     })
       .then(function() {
-        alert("Message sent successfully!");
         form.reset();
         button.disabled = false;
         button.textContent = "Send";
+        notification.classList.remove("hidden");
       })
       .catch(function(error) {
         console.error("Error sending message:", error);
@@ -1107,6 +1114,10 @@
         button.disabled = false;
         button.textContent = "Send";
       });
+  });
+
+  document.getElementById("notification-close").addEventListener("click", function() {
+    document.getElementById("success-notification").classList.add("hidden");
   });
 </script>
     <footer class="footer">
