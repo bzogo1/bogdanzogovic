@@ -1,13 +1,36 @@
-body {
-  background: #fed;
-  margin: 0;
-  padding: 0;
-  min-height: 100vh;
-  display: grid;
-  place-items: center;
-  overflow: hidden;
+.coffee-jar-container {
+  position: absolute;
+  bottom: 0;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 100%;
+  height: auto;
+  display: flex;
+  justify-content: center;
+  align-items: flex-end;
+  pointer-events: none;
+  z-index: 1;
+  padding-bottom: 0;
 }
 
-svg {
-  width: 90vmin;
+.coffee-jar {
+  width: 160px;
+  height: auto;
+  max-height: 130px;
+  display: block;
+  margin-bottom: 0;
+}
+
+@media (max-width: 768px) {
+  .coffee-jar {
+    width: 120px;
+    max-height: 100px;
+  }
+}
+
+@media (max-width: 480px) {
+  .coffee-jar {
+    width: 100px;
+    max-height: 85px;
+  }
 }
