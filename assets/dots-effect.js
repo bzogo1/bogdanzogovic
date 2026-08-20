@@ -72,21 +72,32 @@ if (!c) {
     ctx.fill();
   }
 
-  // Handle mouse movement on the canvas
+  // Handle mouse movement on the entire document
   const handleMouseMove = (e) => {
     cRect = c.getBoundingClientRect();
     sx = cw / cRect.width;
     sy = ch / cRect.height;
     
-    const x = (e.clientX - cRect.left) * sx;
-    const y = (e.clientY - cRect.top) * sy;
+    // Calculate position relative to canvas
+    const canvasX = e.clientX - cRect.left;
+    const canvasY = e.clientY - cRect.top;
     
-    xTo(x);
-    yTo(y);
+    // Only update if mouse is over or near the canvas
+    if (canvasX >= -100 && canvasX <= cRect.width + 100 && 
+        canvasY >= -100 && canvasY <= cRect.height + 100) {
+      m.x2 = canvasX * sx;
+      m.y2 = canvasY * sy;
+      
+      xTo(m.x2);
+      yTo(m.y2);
+      
+      console.log('Mouse position:', m.x2, m.y2);
+    }
   };
 
-  c.addEventListener('pointermove', handleMouseMove);
-  c.addEventListener('mousemove', handleMouseMove);
+  // Add event listener to document for global mouse tracking
+  document.addEventListener('pointermove', handleMouseMove);
+  document.addEventListener('mousemove', handleMouseMove);
 
   window.addEventListener('resize', ()=>{
     cRect = c.getBoundingClientRect()
@@ -111,5 +122,5 @@ if (!c) {
 
   observer.observe(document.body, { attributes: true });
   
-  console.log('Dots effect initialized with mouse interaction');
+  console.log('Dots effect initialized with mouse interaction on header');
 }
