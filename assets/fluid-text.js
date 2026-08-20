@@ -59,7 +59,7 @@ import {
 
   const PALETTE = {
     BG: [0.0, 0.0, 0.0], // Not used with transparent background
-    FILL: [0.1, 0.4, 0.8] // Darker blue color
+    FILL: [0.95, 0.93, 0.88] // Pearl white color
   };
 
   const BASE_WAVES = [

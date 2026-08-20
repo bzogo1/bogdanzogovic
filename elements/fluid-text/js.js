@@ -57,7 +57,7 @@ import {
   // Defined here so JS and GLSL stay in sync when you tweak them.
   const PALETTE = {
     BG: [0.8, 1.0, 0.0], // chartreuse  (#c8ff00)
-    FILL: [0.765, 0.518, 1.0] // soft lavender
+    FILL: [0.95, 0.93, 0.88] // pearl white
   };
 
   // ── wave field ──────────────────────────────────────────
