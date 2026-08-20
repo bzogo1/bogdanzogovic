@@ -4,3 +4,11 @@
   height:auto;
   overflow:visible;
 }
+
+.printing-animation circle {
+  fill: white;
+}
+
+body.light .printing-animation circle {
+  fill: black;
+}
