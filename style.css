@@ -615,7 +615,7 @@ main {
   width: 100%;
   top: var(--gutter-x-small);
   left: 0;
-  z-index: 4;
+  z-index: 10;
 }
 
 .menu-btn {
@@ -648,7 +648,7 @@ main {
   background-color: #ff5e99;
   background-image: var(--gradient-brand);
   transition: 450ms var(--easing);
-  z-index: 3;
+  z-index: 10;
 }
 
 .nav-items {
@@ -700,13 +700,11 @@ main {
 }
 
 body.dark .header {
-  background-image: linear-gradient(#0000008b, #000000e6),
-    url("assets/images/hero-bg.webp");
+  background: linear-gradient(#0000008b, #000000e6);
 }
 
 body.light .header {
-  background-image: linear-gradient(#ffffffa2, #ffffffe6),
-    url("assets/images/hero-bg-light.webp");
+  background: linear-gradient(#ffffffa2, #ffffffe6);
 }
 
 .header-content {
@@ -716,6 +714,7 @@ body.light .header {
   gap: clamp(2rem, 4vw, 4rem);
   min-height: calc(100vh + var(--radius));
   position: relative;
+  z-index: 1;
 }
 
 .header-textbox {

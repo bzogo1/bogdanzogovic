@@ -61,8 +61,11 @@
     <link rel="stylesheet" href="assets/fluid-text.css"  />
     <link rel="stylesheet" href="elements/cool-animation/css.css"  />
     <link rel="stylesheet" href="elements/coffee-jar/css.css"  />
+    <link rel="stylesheet" href="elements/image-dots-effect/css.css"  />
     <script src="script.js" defer></script>
     <script type="module" src="assets/fluid-text.js" defer></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
+    <script src="elements/image-dots-effect/js.js" defer></script>
     <script>
       window.si = window.si || function () { (window.siq = window.siq || []).push(arguments); };
     </script>
@@ -95,6 +98,9 @@
     </div>
 
     <header class="header">
+      <div id="image-dots-bg">
+        <canvas id="image-dots-canvas"></canvas>
+      </div>
 
       <div class="menu-btn-container">
         <div class="container">
