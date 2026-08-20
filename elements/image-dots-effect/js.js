@@ -1,4 +1,4 @@
-const c = document.querySelector('#image-dots-canvas');
+const c = document.querySelector('#c');
 const ctx = c.getContext('2d');
 const cw = 2000; //too small = poor image quality, too big = performance suffers
 const ch = cw; 
@@ -16,38 +16,27 @@ const sTo = gsap.quickTo(m, "s", {duration:2, ease:"power2"})
 let boxes = [];
 
 const imgs = {
-  'dark': 'assets/images/hero-bg.webp',
-  'light': 'assets/images/hero-bg-light.webp'
-};
+  'logo':'https://assets.codepen.io/721952/logo_2000x2000.png',
+  'flowers':'https://images.unsplash.com/photo-1777059269563-51fdb397358c?q=80&w='+cw,
+  'snowy mountain':'https://images.unsplash.com/photo-1648723906701-260f1be9bd68?q=80&w='+cw,
+  'prism':'https://images.unsplash.com/photo-1597589827317-4c6d6e0a90bd?q=80&w='+cw,
+  'northern lights':'https://images.unsplash.com/photo-1680666032153-46856cdcb21f?q=80&w='+cw,
+  'portrait':'https://images.unsplash.com/photo-1665174286799-5c51dcc9748a?q=80&w='+cw
+}
 
 const props = {
-  img: imgs['dark'], // image URL
+  img: imgs['flowers'], // image URL
   boxSize: 123, // size of grid boxes
   fade: false, // toggle fading opacity 
   dots: true, // toggle drawing dots
   dotColor: '#fff', // dot color
-};
+}
 
 ctx.fillStyle = props.dotColor;
 
 const img = new Image();
-let isInitialLoad = true;
-
-function loadImage(imageSrc) {
-  img.src = imageSrc;
-  img.onload = function() {
-    if (isInitialLoad) {
-      initImg();
-      isInitialLoad = false;
-    } else {
-      boxes = [];
-      initImg();
-    }
-  };
-}
-
-// Initial load with default image
-loadImage(props.img);
+img.src = props.img;
+img.onload = initImg;
 
 function initImg(){
   for (let x=0; x<=cw; x+=props.boxSize) { for (let y=0; y<=ch; y+=props.boxSize) boxes.push({ x, y, d:0, s:0 }) }
@@ -92,27 +81,33 @@ window.addEventListener('resize', ()=>{
   sy = ch / cRect.height;
 });
 
-// Theme switching logic
-function updateImageForTheme() {
-  const theme = document.body.classList.contains('light') ? 'light' : 'dark';
-  const newImageSrc = imgs[theme];
-  
-  if (props.img !== newImageSrc) {
-    props.img = newImageSrc;
-    loadImage(newImageSrc);
-  }
-}
 
-// Listen for theme changes
-const observer = new MutationObserver((mutations) => {
-  mutations.forEach((mutation) => {
-    if (mutation.attributeName === 'class') {
-      updateImageForTheme();
-    }
-  });
+
+// Tweakpane
+import {Pane} from 'https://cdn.jsdelivr.net/npm/tweakpane@4.0.5/dist/tweakpane.min.js';
+const pane = new Pane({title: 'Options', expanded:false});
+
+const p_img = pane.addBinding(props, 'img', {options: imgs});
+p_img.on('change', function(e) {
+  img.src = e.value;
+  initImg()
 });
 
-observer.observe(document.body, { attributes: true });
+const p_boxSize = pane.addBinding(props, 'boxSize', {min: 25, max: 250, step: 1});
+p_boxSize.on('change', (e)=> {
+  boxes = [];
+  props.boxSize = e.value;
+  initImg()
+});
 
-// Initial theme setup
-updateImageForTheme();
+const p_fade = pane.addBinding(props, 'fade');
+p_fade.on('change', (e)=> props.fade = e.value );
+
+const p_drawDots = pane.addBinding(props, 'dots');
+p_drawDots.on('change', (e)=> props.dots = e.value );
+
+const p_dotColor = pane.addBinding(props, 'dotColor', {});
+p_dotColor.on('change', function(e) {
+  props.dotColor = e.value;
+  ctx.fillStyle = props.dotColor;
+});
