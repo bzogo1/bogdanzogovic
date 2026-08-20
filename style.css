@@ -1620,6 +1620,50 @@ input:checked {
   padding-block-start: var(--gutter-huge);
 }
 
+.printing-content {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: clamp(2rem, 4vw, 4rem);
+}
+
+.printing-text-content {
+  flex: 1;
+  max-inline-size: 60%;
+}
+
+.printing-animation {
+  flex: 0 0 clamp(200px, 30vw, 350px);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.printing-animation svg {
+  width: 100%;
+  height: auto;
+  max-height: 400px;
+}
+
+@media (max-width: 845px) {
+  .printing-content {
+    flex-direction: column;
+    text-align: center;
+  }
+
+  .printing-text-content {
+    max-inline-size: 100%;
+  }
+
+  .printing-subtitle {
+    text-align: center;
+  }
+
+  .printing-text {
+    text-align: center;
+  }
+}
+
 .printing-subtitle {
   font-size: var(--h3);
   color: var(--important);
