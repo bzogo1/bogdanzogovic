@@ -1048,49 +1048,67 @@
         </p>
       </div>
 
-      <!-- Working email form using EmailJS -->
+      <!-- Contact form using Google Apps Script -->
       <form id="contact-form" class="contact-form">
         <div class="form-field">
           <label for="name">Name</label>
           <input type="text" name="name" id="name" required />
         </div>
+
         <div class="form-field">
           <label for="email">Email</label>
           <input type="email" name="email" id="email" required />
         </div>
+
         <div class="form-field">
           <label for="message">What do you want to chat about?</label>
           <textarea name="message" id="message" required></textarea>
         </div>
+
         <button type="submit" class="btn btn-cta">Send</button>
       </form>
     </div>
   </div>
 </section>
 
-<script src="https://cdn.jsdelivr.net/npm/emailjs-com@3/dist/email.min.js"></script>
 <script>
-  (function() {
-    emailjs.init("c16hmqACWDlKOIJMd"); // Replace with your EmailJS public key
-  })();
-
-  document.getElementById('contact-form').addEventListener('submit', function(event) {
+  document.getElementById("contact-form").addEventListener("submit", function(event) {
     event.preventDefault();
 
-    emailjs.send("service_lbn504l", "template_wu8tk8j", {
-      from_name: document.getElementById('name').value,
-      from_email: document.getElementById('email').value,
-      message: document.getElementById('message').value,
-      to_email: "bzogovic7@gmail.com"
+    const form = this;
+    const button = form.querySelector("button[type='submit']");
+
+    const formData = new URLSearchParams();
+
+    formData.append("name", document.getElementById("name").value);
+    formData.append("email", document.getElementById("email").value);
+    formData.append("message", document.getElementById("message").value);
+
+    button.disabled = true;
+    button.textContent = "Sending...";
+
+    fetch("https://script.google.com/macros/s/AKfycbyfdeDKI-UEtd2wNvcmatXOMu3RTbek-FXaQpXi-k_mcqLIhtUL_Jsm2iGyCFJsIaLU/exec", {
+      method: "POST",
+      mode: "no-cors",
+      headers: {
+        "Content-Type": "application/x-www-form-urlencoded;charset=UTF-8"
+      },
+      body: formData.toString()
     })
-    .then(function() {
-      alert('Message sent successfully!');
-    }, function(error) {
-      alert('Failed to send message: ' + JSON.stringify(error));
-    });
+      .then(function() {
+        alert("Message sent successfully!");
+        form.reset();
+        button.disabled = false;
+        button.textContent = "Send";
+      })
+      .catch(function(error) {
+        console.error("Error sending message:", error);
+        alert("Failed to send message. Please try again.");
+        button.disabled = false;
+        button.textContent = "Send";
+      });
   });
 </script>
-
     <footer class="footer">
       <div class="container">
         <div class="footer-content">
