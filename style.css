@@ -967,6 +967,36 @@ body.light .logo {
   align-items: center;
 }
 
+.work-box:nth-child(2) {
+  justify-content: center;
+  text-align: center;
+}
+
+.work-box:nth-child(2) .work-textbox {
+  text-align: center;
+  margin: 0 auto;
+}
+
+.work-box:nth-child(2) .work-links {
+  justify-content: center;
+  display: flex;
+  gap: var(--gutter-x-small);
+}
+
+.work-box:nth-child(2) .work-technologies {
+  justify-content: center;
+  display: flex;
+  gap: var(--gutter-micro);
+  list-style: none;
+  padding: 0;
+}
+
+.work-box:nth-child(2) .work-img {
+  margin: 0 auto;
+  display: flex;
+  justify-content: center;
+}
+
 @media (max-width: 1045px) {
   .work-boxes {
     max-inline-size: fit-content;
@@ -978,8 +1008,16 @@ body.light .logo {
     align-items: flex-start;
   }
 
+  .work-box:nth-child(2) {
+    align-items: center;
+  }
+
   .work-img {
     margin-block-end: var(--gutter-medium);
+  }
+
+  .work-box:nth-child(2) .work-img {
+    margin: 0 auto var(--gutter-medium) auto;
   }
 }
 
