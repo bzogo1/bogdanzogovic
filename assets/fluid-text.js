@@ -36,12 +36,12 @@ import {
   const MOUSE_SWELL = {
     DIST_FALLOFF: 3.0, // Increased falloff for less spread
     FREQUENCY: 6.0, // Reduced frequency for slower movement
-    SPEED_MUL: 3.0, // Reduced speed multiplier for slower animation
+    SPEED_MUL: 1.5, // Further reduced speed multiplier for slower animation
     AMPLITUDE: 0.6 // Reduced amplitude for less intense effect
   };
 
   const CONTOUR = {
-    LINE_WIDTH: 0.22,
+    LINE_WIDTH: 0.15, // Reduced from 0.22 to make lines thinner
     AA_BASE: 0.015,
     AA_DENSITY_SCALE: 0.005,
     WAVE_SCALE: 0.5
@@ -209,7 +209,7 @@ import {
       },
       uMouse: { value: new Vector2(0.5, 0.5) },
       uDensity: { value: 9.0 },
-      uSpeed: { value: 0.28 },
+      uSpeed: { value: 0.15 }, // Reduced from 0.28 for slower overall animation
       uTurb: { value: 0.45 },
       uMask: { value: maskTex }
     };
