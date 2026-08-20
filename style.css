@@ -953,6 +953,15 @@ body.light .logo {
   filter: grayscale(100%) opacity(0.6);
 }
 
+/* Unreal Engine logo - inverted colors based on theme */
+body.dark .unreal-logo {
+  filter: invert(1) grayscale(100%) opacity(0.6);
+}
+
+body.light .unreal-logo {
+  filter: invert(0) grayscale(100%) opacity(0.6);
+}
+
 /* --------------------------------- */
 /* ----- Work -----*/
 /* --------------------------------- */
