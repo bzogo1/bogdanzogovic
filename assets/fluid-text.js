@@ -53,7 +53,7 @@ import {
   };
 
   const BORDER = {
-    WIDTH: 0.03, // Width of the white border
+    WIDTH: 0.08, // Increased width of the white border for better visibility
     COLOR: [1.0, 1.0, 1.0] // White color
   };
 
