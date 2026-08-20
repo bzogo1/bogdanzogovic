@@ -1091,11 +1091,11 @@
 
               <div class="github-stats">
                 <div class="stat-item">
-                  <span class="stat-value">1</span>
-                  <span class="stat-label">Repo</span>
+                  <span class="stat-value" id="repo-count">2</span>
+                  <span class="stat-label">Repos</span>
                 </div>
                 <div class="stat-item">
-                  <span class="stat-value">1</span>
+                  <span class="stat-value" id="follower-count">1</span>
                   <span class="stat-label">Follower</span>
                 </div>
               </div>
@@ -1251,5 +1251,26 @@
         </div>
       </div>
     </footer>
+
+    <script>
+      async function fetchGitHubStats() {
+        try {
+          const response = await fetch('https://api.github.com/users/bzogo1');
+          const data = await response.json();
+          
+          if (data.public_repos !== undefined) {
+            document.getElementById('repo-count').textContent = data.public_repos;
+          }
+          if (data.followers !== undefined) {
+            document.getElementById('follower-count').textContent = data.followers;
+          }
+        } catch (error) {
+          console.error('Error fetching GitHub stats:', error);
+        }
+      }
+
+      // Fetch stats when page loads
+      fetchGitHubStats();
+    </script>
   </body>
 </html>
