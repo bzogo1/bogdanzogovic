@@ -1,0 +1,3 @@
+https://docs.google.com/spreadsheets/d/18a0WsyIjqjwmiBIw0pi4I_FW8snClw4mXABclf0wVMQ/edit?gid=0#gid=0
+https://script.google.com/u/0/home/projects/1B05litxaeNAbyhHWA1I0-PWX70NJY3YwSQXcAb1CWlJoyVrSUQdP_pgE/edit
+https://github.com/dwyl/learn-to-send-email-via-google-script-html-no-server
