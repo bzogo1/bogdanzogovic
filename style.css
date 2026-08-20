@@ -780,7 +780,7 @@ body.light .header {
   transform: rotateX(var(--tilt-x)) rotateY(var(--tilt-y)) translateY(var(--lift));
   background:
     linear-gradient(135deg, rgba(2, 6, 23, 0.38), rgba(2, 6, 23, 0.8)),
-    url("assets/images/card.png") center/cover no-repeat;
+    url("assets/images/card.jpg") center/cover no-repeat;
   box-shadow: 0 35px 75px -18px rgba(0, 0, 0, 0.6);
   transition: transform 240ms ease, box-shadow 240ms ease;
 }
